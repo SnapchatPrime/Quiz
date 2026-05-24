@@ -1,168 +1,204 @@
-<!DOCTYPE html>
-<html lang="ku" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>داواکردنی تایبەتمەندی</title>
-    
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap');
+<div class="column" style="width: 100%; max-width: 600px; margin: auto;">
+  <div class="content" style="background: rgba(0, 0, 0, 0.05); border-radius: 15px; padding: 20px; text-align: center; border: 1px solid #ddd;">
+    <h2>پێشبڕکێی Snapchat Prime 🏆</h2>
+    <p>وەڵامی ئەم ٥ پرسیارە بدەرەوە، ٣ کەسی یەکەم کلیلی ڤی ئای پی دەبەنەوە!</p>
+    <hr>
 
-        /* ڕێکخستنی بنەڕەتی */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Vazirmatn', sans-serif; /* بەکارهێنانی فۆنتە نوێیەکە */
-        }
-        
-        body {
-            background-color: #0f0f1a;
-            background-image: radial-gradient(circle at top right, #1a1a2e, #0f0f1a, #05050a);
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden; 
-            position: relative;
-        }
-        
-        /* شێوە ڕووناکییەکانی پشتەوە */
-        .bg-shape1, .bg-shape2 {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(90px);
-            z-index: 0;
-        }
-        .bg-shape1 {
-            width: 300px;
-            height: 300px;
-            background: rgba(255, 235, 59, 0.12);
-            top: -10%;
-            right: -10%;
-        }
-        .bg-shape2 {
-            width: 250px;
-            height: 250px;
-            background: rgba(255, 255, 255, 0.04);
-            bottom: -10%;
-            left: -10%;
-        }
+    <div id="already-played-section" style="display: none; padding: 20px;">
+        <h3 style="color: red;">❌ تۆ پێشتر بەشداریت کردووە!</h3>
+        <p>تەنیا یەکجار مافی بەشداریکردنت هەیە. چاوەڕێی پێشبڕکێی داهاتوو بە.</p>
+    </div>
 
-        /* بۆکسە شوشەییەکە */
-        .glass-container {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 35px 25px;
-            width: 90%; 
-            max-width: 400px; 
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
-            z-index: 1; 
-        }
+    <div id="username-section">
+      <p style="font-weight: bold;">بۆ بەشداریکردن، یوزەری تەلەگرامی خۆت بنووسە:</p>
+      <input type="text" id="tg-username" placeholder="@YourUsername" style="padding: 12px; width: 80%; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 15px; font-size: 16px;">
+      <br>
+      <button onclick="startQuiz()" style="padding: 10px 25px; background-color: #fffc00; color: black; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; font-size: 16px;">دەستپێکردنی کویز</button>
+    </div>
 
-        /* ناونیشان */
-        h2 {
-            text-align: center;
-            color: #fff;
-            margin-bottom: 25px;
-            font-size: clamp(22px, 5vw, 26px); 
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-shadow: 0 0 10px rgba(255, 235, 59, 0.3);
-        }
-        h2 span {
-            color: #ffeb3b;
-        }
+    <div id="quiz-section" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <p id="progress-text" style="margin: 0; font-size: 14px; color: #666; font-weight: bold;"></p>
+        <p id="timer-text" style="margin: 0; font-size: 16px; color: #d9534f; font-weight: bold; background: #fdfdfe; padding: 5px 10px; border-radius: 5px; border: 1px solid #d9534f;">⏱️ ١٠ چرکە</p>
+      </div>
+      <h3 id="question-text" style="margin-bottom: 20px; color: #333;"></h3>
+      <div id="options-area" style="display: flex; flex-direction: column; gap: 10px;"></div>
+    </div>
 
-        /* بەشی داخڵکردنەکان */
-        .input-group {
-            margin-bottom: 18px;
-        }
-
-        label {
-            display: block;
-            font-size: 15px;
-            color: #ccc;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        input, textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
-            background: rgba(0, 0, 0, 0.25);
-            color: #fff;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            outline: none;
-            resize: none; 
-        }
-
-        input:focus, textarea:focus {
-            border-color: #ffeb3b;
-            background: rgba(0, 0, 0, 0.5);
-            box-shadow: 0 0 12px rgba(255, 235, 59, 0.2);
-        }
-
-        input::placeholder, textarea::placeholder {
-            color: #777;
-            font-weight: 400;
-        }
-
-        /* دوگمەی ناردن */
-        button {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #ffeb3b, #fbc02d);
-            color: #000;
-            border: none;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 235, 59, 0.2);
-            margin-top: 10px;
-        }
-
-        button:hover {
-            box-shadow: 0 6px 20px rgba(255, 235, 59, 0.4);
-            transform: translateY(-2px);
-        }
-        
-        button:active {
-            transform: translateY(1px);
-        }
-    </style>
-</head>
-<body>
-
-<div class="bg-shape1"></div>
-<div class="bg-shape2"></div>
-
-<div class="glass-container">
-    <h2>Snapchat<span>Prime</span> Requests</h2>
-    <form action="https://formspree.io/f/mreregpp" method="POST">
-        
-        <div class="input-group">
-            <label>ناوی تۆ (ئارەزوومەندانە):</label>
-            <input type="text" name="name" placeholder="دەتوانیت ناوت بنووسیت یان بەتاڵی جێبهێڵیت...">
-        </div>
-        
-        <div class="input-group">
-            <label>تایبەتمەندی داواکراو:</label>
-            <textarea name="request" placeholder="چ تایبەتمەندییەکی نوێ بۆ بەرنامەکە زیاد بکەین؟..." rows="4" required></textarea>
-        </div>
-        
-        <button type="submit">ناردنی داواکاری</button>
-    </form>
+    <div id="result-section" style="display: none;">
+      <h3 style="color: #28a745;">کویزەکە تەواو بوو! 🎉</h3>
+      <h2 id="score-text"></h2>
+      <p id="final-message" style="margin-top: 10px; font-weight: bold;"></p>
+    </div>
+  </div>
 </div>
 
-</body>
-</html>
+<script>
+  // زانیارییەکانی بۆتی تەلەگرامەکەت
+  const BOT_TOKEN = "8755532350:AAHbBSjy3FsuPdNYQ5nE3iHMMXN26-j49Vg"; 
+  const CHAT_ID = "5909261841";
+
+  // بانکی پرسیارەکان (زیاتر لە 15 پرسیار)
+  const allQuestions = [
+    { q: "کام وڵات بە خاکی هەڵاتنی خۆر ناسراوە؟", options: ["چین", "ژاپۆن", "کۆریا", "تایلەند"], answer: "ژاپۆن" },
+    { q: "مۆندیالی 2022 لە کام وڵات بەڕێوەچوو؟", options: ["قەتەر", "ڕوسیا", "بەڕازیل", "ئەڵمانیا"], answer: "قەتەر" },
+    { q: "کێ زۆرترین باڵۆن دۆری بردووەتەوە لە مێژووی تۆپی پێدا؟", options: ["لیۆنێل مێسی", "کریستیانۆ ڕۆناڵدۆ", "پێلێ", "مارادۆنا"], answer: "لیۆنێل مێسی" },
+    { q: "کام کیشوەر گەورەترینە لە ڕووی ڕووبەرەوە؟", options: ["ئاسیا", "ئەفریقا", "ئەمریکای باکوور", "ئەوروپا"], answer: "ئاسیا" },
+    { q: "کام هەسارە بە هەسارەی سوور ناسراوە؟", options: ["مەریخ", "زوهڕە", "موشتەری", "عەتارید"], answer: "مەریخ" },
+    { q: "خێراترین ئاژەڵی سەر زەوی کامەیە؟", options: ["چیتە (پڵنگ)", "شێر", "ئاسک", "هەڵۆ"], answer: "چیتە (پڵنگ)" },
+    { q: "یەکەم کەس کە چووە سەر مانگ کێ بوو؟", options: ["نیڵ ئارمسترۆنگ", "یوری گاگارین", "باز ئۆڵدرین", "ئایلۆن مەسک"], answer: "نیڵ ئارمسترۆنگ" },
+    { q: "وێنەکێشی تابلۆی 'مۆنالیزا' کێیە؟", options: ["لیۆناردۆ داڤینچی", "ڤینسێنت ڤان گۆخ", "پابلۆ پیکاسۆ", "مایکڵ ئەنجێلۆ"], answer: "لیۆناردۆ داڤینچی" },
+    { q: "سیمبولی کیمیایی بۆ ئاو چییە؟", options: ["H2O", "CO2", "O2", "NaCl"], answer: "H2O" },
+    { q: "گەورەترین ئۆقیانووس لە جیهاندا کامەیە؟", options: ["ئۆقیانووسی هێمن", "ئۆقیانووسی ئەتڵەسی", "ئۆقیانووسی هیندی", "ئۆقیانووسی بەستەڵەکی باکوور"], answer: "ئۆقیانووسی هێمن" },
+    { q: "لە یاری باسکەدا چەند یاریزان بۆ هەر تیپێک لەناو یاریگادان؟", options: ["5", "6", "7", "11"], answer: "5" },
+    { q: "پایتەختی ئیمپراتۆریەتی عوسمانی پێش ئەستەنبوڵ کوێ بوو؟", options: ["ئەدیرنە", "بورسا", "قۆنیا", "ئەنقەرە"], answer: "ئەدیرنە" },
+    { q: "لە یاری شەترەنجدا کام پارچە تەنیا بە خوار و خێچ (دیالۆگ) دەڕوات؟", options: ["فیل", "ئەسپ", "قەڵا", "پاشا"], answer: "فیل" },
+    { q: "جەنگی جیهانی دووەم لە چ ساڵێک کۆتایی هات؟", options: ["1945", "1939", "1918", "1950"], answer: "1945" },
+    { q: "دراوی فەرمی وڵاتی یابان چییە؟", options: ["یەن", "یوان", "وۆن", "دۆلار"], answer: "یەن" }
+  ];
+
+  let selectedQuestions = [];
+  let currentQuestion = 0;
+  let score = 0;
+  let username = "";
+  let timeLeft = 10;
+  let timerInterval;
+
+  // پشکنین ئایا پێشتر یاری کردووە
+  window.onload = function() {
+      if(localStorage.getItem("snap_prime_quiz_played") === "true") {
+          document.getElementById("username-section").style.display = "none";
+          document.getElementById("already-played-section").style.display = "block";
+      }
+  };
+
+  // تێکەڵکردنی ئارەی (Array) بۆ پرسیار و هەڵبژاردەکان
+  function shuffleArray(array) {
+      let currentIndex = array.length, randomIndex;
+      while (currentIndex != 0) {
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex--;
+          [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+      }
+      return array;
+  }
+
+  function startQuiz() {
+    username = document.getElementById("tg-username").value;
+    if(username.trim() === "" || !username.includes("@")) {
+      alert("تکایە یوزەری تەلەگرام بە دروستی بنووسە (بە @ دەست پێ بکات).");
+      return;
+    }
+    
+    // سەیڤکردنی ڕێگری لە فێڵکردن
+    localStorage.setItem("snap_prime_quiz_played", "true");
+
+    // هەڵبژاردنی 5 پرسیاری هەڕەمەکی
+    let shuffledQuestions = shuffleArray([...allQuestions]);
+    selectedQuestions = shuffledQuestions.slice(0, 5);
+
+    document.getElementById("username-section").style.display = "none";
+    document.getElementById("quiz-section").style.display = "block";
+    loadQuestion();
+  }
+
+  function startTimer() {
+      timeLeft = 10;
+      document.getElementById("timer-text").innerText = `⏱️ ${timeLeft} چرکە`;
+      document.getElementById("timer-text").style.color = "#d9534f";
+      
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+          timeLeft--;
+          document.getElementById("timer-text").innerText = `⏱️ ${timeLeft} چرکە`;
+          
+          if(timeLeft <= 3) {
+              document.getElementById("timer-text").style.color = "red";
+          }
+
+          if(timeLeft <= 0) {
+              clearInterval(timerInterval);
+              checkAnswer(null); // کات تەواو بوو واتە هەڵەیە
+          }
+      }, 1000);
+  }
+
+  function loadQuestion() {
+    if(currentQuestion >= selectedQuestions.length) {
+      showResults();
+      return;
+    }
+
+    startTimer();
+
+    const qData = selectedQuestions[currentQuestion];
+    document.getElementById("question-text").innerText = qData.q;
+    document.getElementById("progress-text").innerText = `پرسیاری ${currentQuestion + 1} / ${selectedQuestions.length}`;
+
+    const optionsArea = document.getElementById("options-area");
+    optionsArea.innerHTML = "";
+
+    // تێکەڵکردنی هەڵبژاردەکان
+    let shuffledOptions = shuffleArray([...qData.options]);
+
+    shuffledOptions.forEach((opt) => {
+      const btn = document.createElement("button");
+      btn.innerText = opt;
+      btn.style.padding = "12px";
+      btn.style.border = "1px solid #ccc";
+      btn.style.borderRadius = "8px";
+      btn.style.backgroundColor = "#fff";
+      btn.style.cursor = "pointer";
+      btn.style.fontSize = "16px";
+      btn.style.transition = "background 0.2s";
+      
+      btn.onmouseover = () => btn.style.backgroundColor = "#f1f1f1";
+      btn.onmouseout = () => btn.style.backgroundColor = "#fff";
+
+      btn.onclick = () => {
+          clearInterval(timerInterval);
+          checkAnswer(opt, qData.answer);
+      }; 
+      optionsArea.appendChild(btn);
+    });
+  }
+
+  function checkAnswer(selectedOpt, correctOpt) {
+    if(selectedOpt === correctOpt) {
+      score++;
+    }
+    currentQuestion++;
+    loadQuestion();
+  }
+
+  function showResults() {
+    clearInterval(timerInterval);
+    document.getElementById("quiz-section").style.display = "none";
+    document.getElementById("result-section").style.display = "block";
+    
+    document.getElementById("score-text").innerText = `نمرەکەت: ${score} لە ${selectedQuestions.length}`;
+    const finalMessageElement = document.getElementById("final-message");
+
+    if (score >= 4) {
+      finalMessageElement.innerText = "ئافەرین! نمرەیەکی بەرزت هێنا، یوزەرەکەت نێردرا بۆ بەڕێوەبەر.";
+      finalMessageElement.style.color = "green";
+      sendToTelegramBot(username, score);
+    } else {
+      finalMessageElement.innerText = "بەداخەوە نمرەکەت کەمە، هیوای سەرکەوتن بۆ جاری داهاتوو.";
+      finalMessageElement.style.color = "red";
+    }
+  }
+
+  function sendToTelegramBot(user, userScore) {
+    const textMsg = `🏆 براوەیەکی نوێ کویزەکەی تەواو کرد!\n\n👤 یوزەر: ${user}\n🎯 نمرە: ${userScore} لە ${selectedQuestions.length}`;
+    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(textMsg)}`;
+
+    fetch(url)
+      .then(response => {
+        if(!response.ok) {
+          console.error("کێشە لە ناردنی داتا بۆ تەلەگرام.");
+        }
+      })
+      .catch(err => console.error(err));
+  }
+</script>
