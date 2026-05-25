@@ -1,7 +1,7 @@
 <div class="column" style="width: 100%; max-width: 600px; margin: auto;">
   <div class="content" style="background: rgba(0, 0, 0, 0.05); border-radius: 15px; padding: 20px; text-align: center; border: 1px solid #ddd;">
-    <h2>پێشبڕکێی ئێڵیت (یاری بیرگە) 🧠</h2>
-    <p>دوو دوو وێنە لێکچووەکانی تایبەتمەندییەکانی سناپچات ئێڵیت بدۆزەرەوە. خێراترین ٣ کەس کلیلی VIP دەبەنەوە!</p>
+    <h2>پێشبڕکێی پڕایم (یاری بیرگە) 🧠</h2>
+    <p>دوو دوو وێنە لێکچووەکانی تایبەتمەندییەکانی سناپچات ئێڵیت بدۆزەرەوە. خێراترین ٣ کەس کلیلی سناپ ئێڵیت دەبەنەوە!</p>
     <hr>
 
     <div id="already-played-section" style="display: none; padding: 20px;">
@@ -88,7 +88,6 @@
   const BOT_TOKEN = "8755532350:AAHbBSjy3FsuPdNYQ5nE3iHMMXN26-j49Vg"; 
   const CHAT_IDS = ["5909261841", "708637965"]; 
 
-  // ئایکۆنی تایبەتمەندییەکان
   const icons = ['👻', '📸', '🍏', '💬', '🚫', '🎨', '👁️', '🔒'];
   let cardsArray = [...icons, ...icons];
 
@@ -102,7 +101,6 @@
   let username = "";
   let platform = "";
 
-  // ناوی کلیلەکە بۆ مانگی یەکەم
   const PLAY_KEY = "snap_prime_memory_v1";
 
   window.onload = function() {
@@ -121,7 +119,6 @@
       return;
     }
     
-    // سەیڤکردنی ڕێگری لە فێڵکردن
     localStorage.setItem(PLAY_KEY, "true");
 
     document.getElementById("username-section").style.display = "none";
@@ -129,7 +126,6 @@
     
     setupBoard();
     
-    // دەستپێکردنی کاتپێوەر
     startTime = Date.now();
     timerInterval = setInterval(updateTime, 100);
   }
@@ -214,20 +210,28 @@
       clearInterval(timerInterval);
       const finalTime = ((Date.now() - startTime) / 1000).toFixed(2);
       
-      // لۆجیکی خاڵبەندی (Scoring Logic)
-      // خاڵی سەرەکی 10,000. هەر هەڵەیەک 500 خاڵ دەشکێنێت. هەر چرکەیەک 50 خاڵ دەشکێنێت.
-      let timePenalty = finalTime * 50;
-      let extraMoves = moves - 8; // 8 کەمترین هەوڵە بۆ تەواوکردنی
-      if(extraMoves < 0) extraMoves = 0;
-      let movesPenalty = extraMoves * 500;
-      
-      let finalScore = Math.round(10000 - movesPenalty - timePenalty);
-      if(finalScore < 0) finalScore = 0; // با خاڵ نەبێتە سفری ژێرەوە
+      // سیستەمی خاڵبەندی سادە لە 0 تا 20
+      let finalScore = 20;
+
+      // سزای هەوڵی زیادە (8 کەمترینە)
+      let extraMoves = moves - 8;
+      if (extraMoves > 0) {
+          finalScore -= extraMoves * 1.5; 
+      }
+
+      // سزای کات (بە 10 چرکە حسابی پێرفێکت کراوە)
+      let extraTime = finalTime - 10;
+      if (extraTime > 0) {
+          finalScore -= extraTime * 0.5; 
+      }
+
+      // خڕکردنەوەی خاڵەکان بۆ ئەوەی بێ پۆینت بێت، و ڕێگری لە خاڵی ژێر سفر
+      finalScore = Math.max(0, Math.round(finalScore));
       
       document.getElementById("game-section").style.display = "none";
       document.getElementById("result-section").style.display = "block";
       
-      document.getElementById("final-score").innerText = `🎯 خاڵەکان: ${finalScore} / 10,000`;
+      document.getElementById("final-score").innerText = `🎯 خاڵەکان: ${finalScore} / 20`;
       document.getElementById("final-time").innerText = `⏱️ کات: ${finalTime} چرکە`;
       document.getElementById("final-moves").innerText = `🔄 هەوڵەکان: ${moves} جار`;
 
@@ -235,7 +239,7 @@
   }
 
   function sendToTelegramBot(user, plat, time, movesCount, scoreCalc) {
-    const textMsg = `🎮 یاریزانێکی نوێ یاری بیرگەی تەواو کرد!\n\n📱 پلاتفۆرم: ${plat}\n👤 یوزەر: ${user}\n🎯 خاڵ: ${scoreCalc}\n⏱️ کات: ${time} چرکە\n🔄 هەوڵەکان: ${movesCount} جار`;
+    const textMsg = `🎮 یاریزانێکی نوێ یاری بیرگەی تەواو کرد!\n\n📱 پلاتفۆرم: ${plat}\n👤 یوزەر: ${user}\n🎯 خاڵ: ${scoreCalc} / 20\n⏱️ کات: ${time} چرکە\n🔄 هەوڵەکان: ${movesCount} جار`;
     
     CHAT_IDS.forEach(chatId => {
       const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(textMsg)}`;
