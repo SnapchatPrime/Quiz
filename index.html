@@ -34,17 +34,9 @@
 </div>
 
 <script>
-  // زانیارییەکانی بۆتی تەلەگرامەکەت
- 
-
-    // زانیارییەکانی بۆتی تەلەگرامەکەت
   const BOT_TOKEN = "8755532350:AAHbBSjy3FsuPdNYQ5nE3iHMMXN26-j49Vg"; 
-  
-  // لێرەدا دەتوانیت چەند ئایدییەک بتەوێت زیادی بکەیت لەناو کەوانەکاندا
   const CHAT_IDS = ["5909261841", "708637965"]; 
 
-
-  // بانکی پرسیارەکان (زیاتر لە 15 پرسیار)
   const allQuestions = [
     { q: "کام وڵات بە خاکی هەڵاتنی خۆر ناسراوە؟", options: ["چین", "ژاپۆن", "کۆریا", "تایلەند"], answer: "ژاپۆن" },
     { q: "مۆندیالی 2022 لە کام وڵات بەڕێوەچوو؟", options: ["قەتەر", "ڕوسیا", "بەڕازیل", "ئەڵمانیا"], answer: "قەتەر" },
@@ -70,7 +62,6 @@
   let timeLeft = 10;
   let timerInterval;
 
-  // پشکنین ئایا پێشتر یاری کردووە
   window.onload = function() {
       if(localStorage.getItem("snap_prime_quiz_played") === "true") {
           document.getElementById("username-section").style.display = "none";
@@ -78,7 +69,6 @@
       }
   };
 
-  // تێکەڵکردنی ئارەی (Array) بۆ پرسیار و هەڵبژاردەکان
   function shuffleArray(array) {
       let currentIndex = array.length, randomIndex;
       while (currentIndex != 0) {
@@ -96,10 +86,8 @@
       return;
     }
     
-    // سەیڤکردنی ڕێگری لە فێڵکردن
     localStorage.setItem("snap_prime_quiz_played", "true");
 
-    // هەڵبژاردنی 5 پرسیاری هەڕەمەکی
     let shuffledQuestions = shuffleArray([...allQuestions]);
     selectedQuestions = shuffledQuestions.slice(0, 5);
 
@@ -124,7 +112,7 @@
 
           if(timeLeft <= 0) {
               clearInterval(timerInterval);
-              checkAnswer(null); // کات تەواو بوو واتە هەڵەیە
+              checkAnswer(null); 
           }
       }, 1000);
   }
@@ -144,7 +132,6 @@
     const optionsArea = document.getElementById("options-area");
     optionsArea.innerHTML = "";
 
-    // تێکەڵکردنی هەڵبژاردەکان
     let shuffledOptions = shuffleArray([...qData.options]);
 
     shuffledOptions.forEach((opt) => {
@@ -195,10 +182,9 @@
     }
   }
 
-    function sendToTelegramBot(user, userScore) {
+  function sendToTelegramBot(user, userScore) {
     const textMsg = `🏆 براوەیەکی نوێ کویزەکەی تەواو کرد!\n\n👤 یوزەر: ${user}\n🎯 نمرە: ${userScore} لە ${selectedQuestions.length}`;
     
-    // ناردنی نامەکە بۆ هەموو ئەو ئایدییانەی لە سەرەوە دامان ناوە
     CHAT_IDS.forEach(chatId => {
       const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(textMsg)}`;
 
@@ -211,5 +197,4 @@
         .catch(err => console.error(err));
     });
   }
-
 </script>
