@@ -10,8 +10,14 @@
     </div>
 
     <div id="username-section">
-      <p style="font-weight: bold;">بۆ دەستپێکردن، یوزەری تەلەگرام بنووسە:</p>
-      <input type="text" id="tg-username" placeholder="@YourUsername" style="padding: 12px; width: 80%; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 15px; font-size: 16px; text-align: left;" dir="ltr">
+      <p style="font-weight: bold; margin-bottom: 10px;">بۆ دەستپێکردن، جۆری هەژمار و یوزەرەکەت بنووسە:</p>
+      
+      <select id="platform-select" style="padding: 10px; width: 85%; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 10px; font-size: 15px; font-family: 'Rudaw', sans-serif; cursor: pointer;">
+          <option value="تەلەگرام ✈️">تەلەگرام ✈️</option>
+          <option value="سناپچات 👻">سناپچات 👻</option>
+      </select>
+
+      <input type="text" id="username-input" placeholder="یوزەرەکەت لێرە بنووسە..." style="padding: 12px; width: 80%; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 15px; font-size: 16px; text-align: left;" dir="ltr">
       <br>
       <button onclick="startGame()" style="padding: 10px 25px; background-color: #D4AF37; color: #000; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);">دەستپێکردنی یاری 🚀</button>
     </div>
@@ -29,8 +35,9 @@
     <div id="result-section" style="display: none;">
       <h3 style="color: #28a745;">ئافەرین! یارییەکەت تەواو کرد 🎉</h3>
       <div style="background: #fff; border-radius: 8px; padding: 15px; border: 1px solid #ddd; margin-top: 15px;">
-          <h3 id="final-time" style="color: #d9534f; margin: 5px 0;"></h3>
-          <h3 id="final-moves" style="color: #9b59b6; margin: 5px 0;"></h3>
+          <h2 id="final-score" style="color: #D4AF37; margin: 5px 0; font-size: 28px;"></h2>
+          <h4 id="final-time" style="color: #d9534f; margin: 5px 0 10px 0;"></h4>
+          <h4 id="final-moves" style="color: #9b59b6; margin: 5px 0;"></h4>
       </div>
       <p style="margin-top: 15px; font-weight: bold; color: green;">ئەنجامەکەت نێردرا بۆ بەڕێوەبەر. چاوەڕێی ڕاگەیاندنی براوەکان بە! 🏆</p>
     </div>
@@ -81,7 +88,7 @@
   const BOT_TOKEN = "8755532350:AAHbBSjy3FsuPdNYQ5nE3iHMMXN26-j49Vg"; 
   const CHAT_IDS = ["5909261841", "708637965"]; 
 
-  // ئایکۆنی تایبەتمەندییەکان (8 ئایکۆن، دوو جار دووبارە دەبنەوە دەکاتە 16 کارت)
+  // ئایکۆنی تایبەتمەندییەکان
   const icons = ['👻', '📸', '🍏', '💬', '🚫', '🎨', '👁️', '🔒'];
   let cardsArray = [...icons, ...icons];
 
@@ -93,8 +100,9 @@
   
   let startTime, timerInterval;
   let username = "";
+  let platform = "";
 
-  // ناوی کلیلەکە بۆ مانگی یەکەم (مانگی داهاتوو بیکە بە v2)
+  // ناوی کلیلەکە بۆ مانگی یەکەم
   const PLAY_KEY = "snap_prime_memory_v1";
 
   window.onload = function() {
@@ -105,9 +113,11 @@
   };
 
   function startGame() {
-    username = document.getElementById("tg-username").value;
-    if(username.trim() === "" || !username.includes("@")) {
-      alert("تکایە یوزەری تەلەگرام بە دروستی بنووسە (بە @ دەست پێ بکات).");
+    username = document.getElementById("username-input").value;
+    platform = document.getElementById("platform-select").value;
+
+    if(username.trim() === "") {
+      alert("تکایە یوزەرەکەت بنووسە پاشان دەست پێ بکە.");
       return;
     }
     
@@ -119,7 +129,7 @@
     
     setupBoard();
     
-    // دەستپێکردنی کاتپێوەر بە میلی-چرکە
+    // دەستپێکردنی کاتپێوەر
     startTime = Date.now();
     timerInterval = setInterval(updateTime, 100);
   }
@@ -134,7 +144,6 @@
       const board = document.getElementById("memory-board");
       board.innerHTML = "";
       
-      // تێکەڵکردنی کارتەکان
       cardsArray.sort(() => 0.5 - Math.random());
 
       cardsArray.forEach(icon => {
@@ -205,17 +214,28 @@
       clearInterval(timerInterval);
       const finalTime = ((Date.now() - startTime) / 1000).toFixed(2);
       
+      // لۆجیکی خاڵبەندی (Scoring Logic)
+      // خاڵی سەرەکی 10,000. هەر هەڵەیەک 500 خاڵ دەشکێنێت. هەر چرکەیەک 50 خاڵ دەشکێنێت.
+      let timePenalty = finalTime * 50;
+      let extraMoves = moves - 8; // 8 کەمترین هەوڵە بۆ تەواوکردنی
+      if(extraMoves < 0) extraMoves = 0;
+      let movesPenalty = extraMoves * 500;
+      
+      let finalScore = Math.round(10000 - movesPenalty - timePenalty);
+      if(finalScore < 0) finalScore = 0; // با خاڵ نەبێتە سفری ژێرەوە
+      
       document.getElementById("game-section").style.display = "none";
       document.getElementById("result-section").style.display = "block";
       
+      document.getElementById("final-score").innerText = `🎯 خاڵەکان: ${finalScore} / 10,000`;
       document.getElementById("final-time").innerText = `⏱️ کات: ${finalTime} چرکە`;
       document.getElementById("final-moves").innerText = `🔄 هەوڵەکان: ${moves} جار`;
 
-      sendToTelegramBot(username, finalTime, moves);
+      sendToTelegramBot(username, platform, finalTime, moves, finalScore);
   }
 
-  function sendToTelegramBot(user, time, movesCount) {
-    const textMsg = `🎮 براوەیەکی نوێ یاری بیرگەی تەواو کرد!\n\n👤 یوزەر: ${user}\n⏱️ کات: ${time} چرکە\n🔄 هەوڵەکان: ${movesCount} جار`;
+  function sendToTelegramBot(user, plat, time, movesCount, scoreCalc) {
+    const textMsg = `🎮 یاریزانێکی نوێ یاری بیرگەی تەواو کرد!\n\n📱 پلاتفۆرم: ${plat}\n👤 یوزەر: ${user}\n🎯 خاڵ: ${scoreCalc}\n⏱️ کات: ${time} چرکە\n🔄 هەوڵەکان: ${movesCount} جار`;
     
     CHAT_IDS.forEach(chatId => {
       const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(textMsg)}`;
