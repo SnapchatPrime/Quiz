@@ -1,7 +1,7 @@
 <div class="column" style="width: 100%; max-width: 600px; margin: auto;">
   <div class="content" style="background: rgba(0, 0, 0, 0.05); border-radius: 15px; padding: 20px; text-align: center; border: 1px solid #ddd;">
-    <h2>پێشبڕکێی پڕایم (یاری بیرگە) 🧠</h2>
-    <p>دوو دوو وێنە لێکچووەکانی تایبەتمەندییەکانی سناپچات ئێڵیت بدۆزەرەوە. خێراترین ٣ کەس کلیلی سناپ ئێڵیت دەبەنەوە!</p>
+    <h2>پێشبڕکێی ئێڵیت (یاری بیرگە) 🧠</h2>
+    <p>دوو دوو وێنە لێکچووەکانی تایبەتمەندییەکانی سناپچات ئێڵیت بدۆزەرەوە. خێراترین ٣ کەس کلیلی VIP دەبەنەوە!</p>
     <hr>
 
     <div id="already-played-section" style="display: none; padding: 20px;">
@@ -210,19 +210,19 @@
       clearInterval(timerInterval);
       const finalTime = ((Date.now() - startTime) / 1000).toFixed(2);
       
-      // سیستەمی خاڵبەندی سادە لە 0 تا 20
+      // سیستەمی خاڵبەندی نوێ و ئاسانکراو
       let finalScore = 20;
 
-      // سزای هەوڵی زیادە (8 کەمترینە)
-      let extraMoves = moves - 8;
+      // سزای هەوڵی زیادە (ڕێگە بە 14 هەوڵ دەدرێت بەبێ سزادان)
+      let extraMoves = moves - 14;
       if (extraMoves > 0) {
-          finalScore -= extraMoves * 1.5; 
+          finalScore -= extraMoves * 0.5; 
       }
 
-      // سزای کات (بە 10 چرکە حسابی پێرفێکت کراوە)
-      let extraTime = finalTime - 10;
+      // سزای کات (ڕێگە بە 25 چرکە دەدرێت بەبێ سزادان)
+      let extraTime = finalTime - 25;
       if (extraTime > 0) {
-          finalScore -= extraTime * 0.5; 
+          finalScore -= extraTime * 0.3; 
       }
 
       // خڕکردنەوەی خاڵەکان بۆ ئەوەی بێ پۆینت بێت، و ڕێگری لە خاڵی ژێر سفر
@@ -252,3 +252,5 @@
     });
   }
 </script>
+
+     
