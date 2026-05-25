@@ -195,16 +195,21 @@
     }
   }
 
-  function sendToTelegramBot(user, userScore) {
+    function sendToTelegramBot(user, userScore) {
     const textMsg = `🏆 براوەیەکی نوێ کویزەکەی تەواو کرد!\n\n👤 یوزەر: ${user}\n🎯 نمرە: ${userScore} لە ${selectedQuestions.length}`;
-    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(textMsg)}`;
+    
+    // ناردنی نامەکە بۆ هەموو ئەو ئایدییانەی لە سەرەوە دامان ناوە
+    CHAT_IDS.forEach(chatId => {
+      const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(textMsg)}`;
 
-    fetch(url)
-      .then(response => {
-        if(!response.ok) {
-          console.error("کێشە لە ناردنی داتا بۆ تەلەگرام.");
-        }
-      })
-      .catch(err => console.error(err));
+      fetch(url)
+        .then(response => {
+          if(!response.ok) {
+            console.error(`کێشە هەیە لە ناردنی داتا بۆ ئایدی: ${chatId}`);
+          }
+        })
+        .catch(err => console.error(err));
+    });
   }
+
 </script>
