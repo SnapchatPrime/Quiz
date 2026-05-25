@@ -1,7 +1,7 @@
 <div class="column" style="width: 100%; max-width: 600px; margin: auto;">
   <div class="content" style="background: rgba(0, 0, 0, 0.05); border-radius: 15px; padding: 20px; text-align: center; border: 1px solid #ddd;">
-    <h2>پێشبڕکێی Snapchat Prime 🏆</h2>
-    <p>وەڵامی ئەم ٥ پرسیارە بدەرەوە، ٣ کەسی یەکەم کلیلی ڤی ئای پی دەبەنەوە!</p>
+    <h2>پێشبڕکێی ئێڵیت (یاری بیرگە) 🧠</h2>
+    <p>دوو دوو وێنە لێکچووەکانی تایبەتمەندییەکانی سناپچات ئێڵیت بدۆزەرەوە. خێراترین ٣ کەس کلیلی VIP دەبەنەوە!</p>
     <hr>
 
     <div id="already-played-section" style="display: none; padding: 20px;">
@@ -10,189 +10,219 @@
     </div>
 
     <div id="username-section">
-      <p style="font-weight: bold;">بۆ بەشداریکردن، یوزەری تەلەگرامی خۆت بنووسە:</p>
-      <input type="text" id="tg-username" placeholder="@YourUsername" style="padding: 12px; width: 80%; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 15px; font-size: 16px;">
+      <p style="font-weight: bold;">بۆ دەستپێکردن، یوزەری تەلەگرام بنووسە:</p>
+      <input type="text" id="tg-username" placeholder="@YourUsername" style="padding: 12px; width: 80%; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 15px; font-size: 16px; text-align: left;" dir="ltr">
       <br>
-      <button onclick="startQuiz()" style="padding: 10px 25px; background-color: #fffc00; color: black; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; font-size: 16px;">دەستپێکردنی کویز</button>
+      <button onclick="startGame()" style="padding: 10px 25px; background-color: #D4AF37; color: #000; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);">دەستپێکردنی یاری 🚀</button>
     </div>
 
-    <div id="quiz-section" style="display: none;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-        <p id="progress-text" style="margin: 0; font-size: 14px; color: #666; font-weight: bold;"></p>
-        <p id="timer-text" style="margin: 0; font-size: 16px; color: #d9534f; font-weight: bold; background: #fdfdfe; padding: 5px 10px; border-radius: 5px; border: 1px solid #d9534f;">⏱️ ١٠ چرکە</p>
+    <div id="game-section" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: #fff; padding: 10px; border-radius: 8px; border: 1px solid #ddd;">
+        <p style="margin: 0; font-size: 15px; color: #333; font-weight: bold;">هەوڵەکان: <span id="moves-text" style="color: #9b59b6;">0</span></p>
+        <p style="margin: 0; font-size: 15px; color: #333; font-weight: bold;">کات: <span id="time-text" style="color: #d9534f;">0.0</span> چرکە</p>
       </div>
-      <h3 id="question-text" style="margin-bottom: 20px; color: #333;"></h3>
-      <div id="options-area" style="display: flex; flex-direction: column; gap: 10px;"></div>
+      
+      <div id="memory-board" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; perspective: 1000px; margin-bottom: 20px;">
+          </div>
     </div>
 
     <div id="result-section" style="display: none;">
-      <h3 style="color: #28a745;">کویزەکە تەواو بوو! 🎉</h3>
-      <h2 id="score-text"></h2>
-      <p id="final-message" style="margin-top: 10px; font-weight: bold;"></p>
+      <h3 style="color: #28a745;">ئافەرین! یارییەکەت تەواو کرد 🎉</h3>
+      <div style="background: #fff; border-radius: 8px; padding: 15px; border: 1px solid #ddd; margin-top: 15px;">
+          <h3 id="final-time" style="color: #d9534f; margin: 5px 0;"></h3>
+          <h3 id="final-moves" style="color: #9b59b6; margin: 5px 0;"></h3>
+      </div>
+      <p style="margin-top: 15px; font-weight: bold; color: green;">ئەنجامەکەت نێردرا بۆ بەڕێوەبەر. چاوەڕێی ڕاگەیاندنی براوەکان بە! 🏆</p>
     </div>
   </div>
 </div>
 
+<style>
+  /* دیزاینی کارتەکان */
+  .memory-card {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.4s;
+    cursor: pointer;
+  }
+  .memory-card.flip {
+    transform: rotateY(180deg);
+  }
+  .front-face, .back-face {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 8px;
+    backface-visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  .front-face {
+    background-color: #fff;
+    border: 2px solid #D4AF37;
+    transform: rotateY(180deg);
+  }
+  .back-face {
+    background-color: #222;
+    border: 2px solid #444;
+    color: #D4AF37;
+    background-image: radial-gradient(circle, #333 10%, transparent 10%), radial-gradient(circle, #333 10%, transparent 10%);
+    background-size: 10px 10px;
+  }
+</style>
+
 <script>
+  // زانیارییەکانی بۆتی تەلەگرام
   const BOT_TOKEN = "8755532350:AAHbBSjy3FsuPdNYQ5nE3iHMMXN26-j49Vg"; 
   const CHAT_IDS = ["5909261841", "708637965"]; 
 
-  const allQuestions = [
-    { q: "کام وڵات بە خاکی هەڵاتنی خۆر ناسراوە؟", options: ["چین", "ژاپۆن", "کۆریا", "تایلەند"], answer: "ژاپۆن" },
-    { q: "مۆندیالی 2022 لە کام وڵات بەڕێوەچوو؟", options: ["قەتەر", "ڕوسیا", "بەڕازیل", "ئەڵمانیا"], answer: "قەتەر" },
-    { q: "کێ زۆرترین باڵۆن دۆری بردووەتەوە لە مێژووی تۆپی پێدا؟", options: ["لیۆنێل مێسی", "کریستیانۆ ڕۆناڵدۆ", "پێلێ", "مارادۆنا"], answer: "لیۆنێل مێسی" },
-    { q: "کام کیشوەر گەورەترینە لە ڕووی ڕووبەرەوە؟", options: ["ئاسیا", "ئەفریقا", "ئەمریکای باکوور", "ئەوروپا"], answer: "ئاسیا" },
-    { q: "کام هەسارە بە هەسارەی سوور ناسراوە؟", options: ["مەریخ", "زوهڕە", "موشتەری", "عەتارید"], answer: "مەریخ" },
-    { q: "خێراترین ئاژەڵی سەر زەوی کامەیە؟", options: ["چیتە (پڵنگ)", "شێر", "ئاسک", "هەڵۆ"], answer: "چیتە (پڵنگ)" },
-    { q: "یەکەم کەس کە چووە سەر مانگ کێ بوو؟", options: ["نیڵ ئارمسترۆنگ", "یوری گاگارین", "باز ئۆڵدرین", "ئایلۆن مەسک"], answer: "نیڵ ئارمسترۆنگ" },
-    { q: "وێنەکێشی تابلۆی 'مۆنالیزا' کێیە؟", options: ["لیۆناردۆ داڤینچی", "ڤینسێنت ڤان گۆخ", "پابلۆ پیکاسۆ", "مایکڵ ئەنجێلۆ"], answer: "لیۆناردۆ داڤینچی" },
-    { q: "سیمبولی کیمیایی بۆ ئاو چییە؟", options: ["H2O", "CO2", "O2", "NaCl"], answer: "H2O" },
-    { q: "گەورەترین ئۆقیانووس لە جیهاندا کامەیە؟", options: ["ئۆقیانووسی هێمن", "ئۆقیانووسی ئەتڵەسی", "ئۆقیانووسی هیندی", "ئۆقیانووسی بەستەڵەکی باکوور"], answer: "ئۆقیانووسی هێمن" },
-    { q: "لە یاری باسکەدا چەند یاریزان بۆ هەر تیپێک لەناو یاریگادان؟", options: ["5", "6", "7", "11"], answer: "5" },
-    { q: "پایتەختی ئیمپراتۆریەتی عوسمانی پێش ئەستەنبوڵ کوێ بوو؟", options: ["ئەدیرنە", "بورسا", "قۆنیا", "ئەنقەرە"], answer: "ئەدیرنە" },
-    { q: "لە یاری شەترەنجدا کام پارچە تەنیا بە خوار و خێچ (دیالۆگ) دەڕوات؟", options: ["فیل", "ئەسپ", "قەڵا", "پاشا"], answer: "فیل" },
-    { q: "جەنگی جیهانی دووەم لە چ ساڵێک کۆتایی هات؟", options: ["1945", "1939", "1918", "1950"], answer: "1945" },
-    { q: "دراوی فەرمی وڵاتی یابان چییە؟", options: ["یەن", "یوان", "وۆن", "دۆلار"], answer: "یەن" }
-  ];
+  // ئایکۆنی تایبەتمەندییەکان (8 ئایکۆن، دوو جار دووبارە دەبنەوە دەکاتە 16 کارت)
+  const icons = ['👻', '📸', '🍏', '💬', '🚫', '🎨', '👁️', '🔒'];
+  let cardsArray = [...icons, ...icons];
 
-  let selectedQuestions = [];
-  let currentQuestion = 0;
-  let score = 0;
+  let hasFlippedCard = false;
+  let lockBoard = false;
+  let firstCard, secondCard;
+  let matchedPairs = 0;
+  let moves = 0;
+  
+  let startTime, timerInterval;
   let username = "";
-  let timeLeft = 10;
-  let timerInterval;
+
+  // ناوی کلیلەکە بۆ مانگی یەکەم (مانگی داهاتوو بیکە بە v2)
+  const PLAY_KEY = "snap_prime_memory_v1";
 
   window.onload = function() {
-      if(localStorage.getItem("snap_prime_quiz_played") === "true") {
+      if(localStorage.getItem(PLAY_KEY) === "true") {
           document.getElementById("username-section").style.display = "none";
           document.getElementById("already-played-section").style.display = "block";
       }
   };
 
-  function shuffleArray(array) {
-      let currentIndex = array.length, randomIndex;
-      while (currentIndex != 0) {
-          randomIndex = Math.floor(Math.random() * currentIndex);
-          currentIndex--;
-          [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-      }
-      return array;
-  }
-
-  function startQuiz() {
+  function startGame() {
     username = document.getElementById("tg-username").value;
     if(username.trim() === "" || !username.includes("@")) {
       alert("تکایە یوزەری تەلەگرام بە دروستی بنووسە (بە @ دەست پێ بکات).");
       return;
     }
     
-    localStorage.setItem("snap_prime_quiz_played", "true");
-
-    let shuffledQuestions = shuffleArray([...allQuestions]);
-    selectedQuestions = shuffledQuestions.slice(0, 5);
+    // سەیڤکردنی ڕێگری لە فێڵکردن
+    localStorage.setItem(PLAY_KEY, "true");
 
     document.getElementById("username-section").style.display = "none";
-    document.getElementById("quiz-section").style.display = "block";
-    loadQuestion();
+    document.getElementById("game-section").style.display = "block";
+    
+    setupBoard();
+    
+    // دەستپێکردنی کاتپێوەر بە میلی-چرکە
+    startTime = Date.now();
+    timerInterval = setInterval(updateTime, 100);
   }
 
-  function startTimer() {
-      timeLeft = 10;
-      document.getElementById("timer-text").innerText = `⏱️ ${timeLeft} چرکە`;
-      document.getElementById("timer-text").style.color = "#d9534f";
-      
-      clearInterval(timerInterval);
-      timerInterval = setInterval(() => {
-          timeLeft--;
-          document.getElementById("timer-text").innerText = `⏱️ ${timeLeft} چرکە`;
-          
-          if(timeLeft <= 3) {
-              document.getElementById("timer-text").style.color = "red";
-          }
+  function updateTime() {
+      const currentTime = Date.now();
+      const timeElapsed = ((currentTime - startTime) / 1000).toFixed(1);
+      document.getElementById("time-text").innerText = timeElapsed;
+  }
 
-          if(timeLeft <= 0) {
-              clearInterval(timerInterval);
-              checkAnswer(null); 
-          }
+  function setupBoard() {
+      const board = document.getElementById("memory-board");
+      board.innerHTML = "";
+      
+      // تێکەڵکردنی کارتەکان
+      cardsArray.sort(() => 0.5 - Math.random());
+
+      cardsArray.forEach(icon => {
+          const card = document.createElement("div");
+          card.classList.add("memory-card");
+          card.dataset.icon = icon;
+          
+          card.innerHTML = `
+              <div class="front-face">${icon}</div>
+              <div class="back-face">S P</div>
+          `;
+          
+          card.addEventListener("click", flipCard);
+          board.appendChild(card);
+      });
+  }
+
+  function flipCard() {
+      if (lockBoard) return;
+      if (this === firstCard) return;
+
+      this.classList.add("flip");
+
+      if (!hasFlippedCard) {
+          hasFlippedCard = true;
+          firstCard = this;
+          return;
+      }
+
+      secondCard = this;
+      moves++;
+      document.getElementById("moves-text").innerText = moves;
+      
+      checkForMatch();
+  }
+
+  function checkForMatch() {
+      let isMatch = firstCard.dataset.icon === secondCard.dataset.icon;
+      isMatch ? disableCards() : unflipCards();
+  }
+
+  function disableCards() {
+      firstCard.removeEventListener("click", flipCard);
+      secondCard.removeEventListener("click", flipCard);
+      
+      matchedPairs++;
+      if(matchedPairs === icons.length) {
+          setTimeout(endGame, 500);
+      }
+      resetBoard();
+  }
+
+  function unflipCards() {
+      lockBoard = true;
+      setTimeout(() => {
+          firstCard.classList.remove("flip");
+          secondCard.classList.remove("flip");
+          resetBoard();
       }, 1000);
   }
 
-  function loadQuestion() {
-    if(currentQuestion >= selectedQuestions.length) {
-      showResults();
-      return;
-    }
+  function resetBoard() {
+      [hasFlippedCard, lockBoard] = [false, false];
+      [firstCard, secondCard] = [null, null];
+  }
 
-    startTimer();
-
-    const qData = selectedQuestions[currentQuestion];
-    document.getElementById("question-text").innerText = qData.q;
-    document.getElementById("progress-text").innerText = `پرسیاری ${currentQuestion + 1} / ${selectedQuestions.length}`;
-
-    const optionsArea = document.getElementById("options-area");
-    optionsArea.innerHTML = "";
-
-    let shuffledOptions = shuffleArray([...qData.options]);
-
-    shuffledOptions.forEach((opt) => {
-      const btn = document.createElement("button");
-      btn.innerText = opt;
-      btn.style.padding = "12px";
-      btn.style.border = "1px solid #ccc";
-      btn.style.borderRadius = "8px";
-      btn.style.backgroundColor = "#fff";
-      btn.style.cursor = "pointer";
-      btn.style.fontSize = "16px";
-      btn.style.transition = "background 0.2s";
+  function endGame() {
+      clearInterval(timerInterval);
+      const finalTime = ((Date.now() - startTime) / 1000).toFixed(2);
       
-      btn.onmouseover = () => btn.style.backgroundColor = "#f1f1f1";
-      btn.onmouseout = () => btn.style.backgroundColor = "#fff";
+      document.getElementById("game-section").style.display = "none";
+      document.getElementById("result-section").style.display = "block";
+      
+      document.getElementById("final-time").innerText = `⏱️ کات: ${finalTime} چرکە`;
+      document.getElementById("final-moves").innerText = `🔄 هەوڵەکان: ${moves} جار`;
 
-      btn.onclick = () => {
-          clearInterval(timerInterval);
-          checkAnswer(opt, qData.answer);
-      }; 
-      optionsArea.appendChild(btn);
-    });
+      sendToTelegramBot(username, finalTime, moves);
   }
 
-  function checkAnswer(selectedOpt, correctOpt) {
-    if(selectedOpt === correctOpt) {
-      score++;
-    }
-    currentQuestion++;
-    loadQuestion();
-  }
-
-  function showResults() {
-    clearInterval(timerInterval);
-    document.getElementById("quiz-section").style.display = "none";
-    document.getElementById("result-section").style.display = "block";
-    
-    document.getElementById("score-text").innerText = `نمرەکەت: ${score} لە ${selectedQuestions.length}`;
-    const finalMessageElement = document.getElementById("final-message");
-
-    if (score >= 4) {
-      finalMessageElement.innerText = "ئافەرین! نمرەیەکی بەرزت هێنا، یوزەرەکەت نێردرا بۆ بەڕێوەبەر.";
-      finalMessageElement.style.color = "green";
-      sendToTelegramBot(username, score);
-    } else {
-      finalMessageElement.innerText = "بەداخەوە نمرەکەت کەمە، هیوای سەرکەوتن بۆ جاری داهاتوو.";
-      finalMessageElement.style.color = "red";
-    }
-  }
-
-  function sendToTelegramBot(user, userScore) {
-    const textMsg = `🏆 براوەیەکی نوێ کویزەکەی تەواو کرد!\n\n👤 یوزەر: ${user}\n🎯 نمرە: ${userScore} لە ${selectedQuestions.length}`;
+  function sendToTelegramBot(user, time, movesCount) {
+    const textMsg = `🎮 براوەیەکی نوێ یاری بیرگەی تەواو کرد!\n\n👤 یوزەر: ${user}\n⏱️ کات: ${time} چرکە\n🔄 هەوڵەکان: ${movesCount} جار`;
     
     CHAT_IDS.forEach(chatId => {
       const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(textMsg)}`;
 
       fetch(url)
         .then(response => {
-          if(!response.ok) {
-            console.error(`کێشە هەیە لە ناردنی داتا بۆ ئایدی: ${chatId}`);
-          }
+          if(!response.ok) console.error(`کێشە لە ناردن بۆ ئایدی: ${chatId}`);
         })
         .catch(err => console.error(err));
     });
