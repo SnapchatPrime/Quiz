@@ -7,250 +7,173 @@
     <style>
         @font-face {
             font-family: 'Rudaw';
-            src: url('coolfont1.ttf'); /* گەر فۆنتەکەت هەبوو، ئەگەرنا خۆی فۆنتی سیستەم بەکاردێنێت */
-        }
-
-        :root {
-            --primary-dark: #0A1914; /* سەوزی تاریک */
-            --secondary-dark: #122B22;
-            --gold: #D4AF37;
-            --gold-light: #F9E596;
-            --text-light: #E8F0ED;
+            src: url('coolfont1.ttf'); 
         }
 
         body {
-            background: radial-gradient(circle at top center, var(--secondary-dark), var(--primary-dark));
-            color: var(--text-light);
-            font-family: 'Rudaw', Tahoma, sans-serif;
+            background-color: #050505;
+            color: #ffffff;
+            font-family: 'Rudaw', 'Segoe UI', Tahoma, sans-serif;
             margin: 0;
             padding: 0;
             min-height: 100vh;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            position: relative;
+            align-items: center; /* ناوەڕاستکردنی ستوونی */
+            background: radial-gradient(circle at 50% 30%, #1a1a1a, #000000);
         }
 
-        /* ئەستێرەکان لە باکگراوند */
-        .stars {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: 
-                radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 40px 70px, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 50px 160px, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 90px 40px, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 130px 80px, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 160px 120px, #ffffff, rgba(0,0,0,0));
-            background-repeat: repeat;
-            background-size: 200px 200px;
-            animation: twinkle 5s infinite linear;
-            opacity: 0.4;
-            z-index: 0;
+        /* هەمان قەبارە و ستایلی کویزەکە */
+        .column {
+            width: 100%; 
+            max-width: 600px; 
+            margin: auto;
+            padding: 15px;
+            box-sizing: border-box;
         }
 
-        @keyframes twinkle {
-            0% { opacity: 0.3; }
-            50% { opacity: 0.6; }
-            100% { opacity: 0.3; }
-        }
-
-        .container {
-            width: 100%;
-            max-width: 500px;
-            padding: 30px;
-            position: relative;
-            z-index: 1;
+        .content {
+            background: rgba(20, 20, 20, 0.7);
+            border-radius: 16px;
+            padding: 30px 20px;
             text-align: center;
-        }
-
-        /* دیزاینی کارتی جەژن */
-        .eid-card {
-            background: rgba(18, 43, 34, 0.6);
             border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 20px;
-            padding: 40px 20px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(212, 175, 55, 0.05);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            animation: floatUp 1.5s ease-out;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
 
-        @keyframes floatUp {
-            0% { transform: translateY(30px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
+        h2.eid-title {
+            color: #D4AF37;
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
         }
 
-        /* مانگ و لۆگۆ */
-        .moon-icon {
-            font-size: 4rem;
-            margin-bottom: 10px;
-            display: inline-block;
-            filter: drop-shadow(0 0 15px rgba(249, 229, 150, 0.5));
-            animation: gentleSwing 4s infinite ease-in-out alternate;
-        }
-
-        @keyframes gentleSwing {
-            0% { transform: rotate(-10deg); }
-            100% { transform: rotate(10deg); }
-        }
-
-        h1 {
-            color: var(--gold);
-            font-size: 2.2rem;
-            margin: 10px 0;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-            letter-spacing: 1px;
-        }
-
-        p.greeting-text {
+        p.greeting {
             font-size: 1.1rem;
+            color: #ddd;
             line-height: 1.8;
-            color: #C1D4CD;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
-        /* بەشی ئاژەڵەکانی قوربانی */
-        .animals-container {
+        /* بۆکسی ئاژەڵەکان */
+        .animals-row {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
-            padding-top: 25px;
+            gap: 15px;
+            margin-bottom: 30px;
             border-top: 1px dashed rgba(212, 175, 55, 0.2);
+            border-bottom: 1px dashed rgba(212, 175, 55, 0.2);
+            padding: 20px 0;
         }
 
-        .animal-box {
-            background: rgba(0, 0, 0, 0.3);
+        .animal-item {
+            background: rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(212, 175, 55, 0.4);
-            border-radius: 15px;
-            padding: 15px 10px;
-            width: 80px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
+            border-radius: 12px;
+            padding: 15px;
+            width: 75px;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        .animal-box::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(212,175,55,0.1) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .animal-box:hover {
-            transform: translateY(-8px);
-            border-color: var(--gold);
-            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.15);
-            background: rgba(212, 175, 55, 0.05);
-        }
-
-        .animal-box:hover::before {
-            opacity: 1;
-            animation: spinLight 4s linear infinite;
-        }
-
-        @keyframes spinLight {
-            100% { transform: rotate(360deg); }
+        .animal-item:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+            border-color: #D4AF37;
         }
 
         .animal-emoji {
             font-size: 2.8rem;
             display: block;
-            margin-bottom: 8px;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4));
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .animal-box:hover .animal-emoji {
-            transform: scale(1.2) rotate(5deg);
+            margin-bottom: 5px;
         }
 
         .animal-name {
             font-size: 0.9rem;
-            color: var(--gold-light);
+            color: #F9E596;
             font-weight: bold;
         }
 
-        /* دوگمەی گەڕانەوە یان داخستن */
-        .btn-home {
+        /* بەشی ئاگاداری پێشبڕکێ */
+        .announcement-box {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.02) 100%);
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            border-radius: 10px;
+            padding: 20px 15px;
+            margin-top: 10px;
+        }
+
+        .announcement-box h3 {
+            color: #fffc00;
+            margin: 0 0 10px 0;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .announcement-box p {
+            color: #fff;
+            margin: 0;
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+        
+        /* دوگمەی داخستن */
+        .btn-close {
             display: inline-block;
-            margin-top: 35px;
-            padding: 12px 30px;
-            background: linear-gradient(135deg, #D4AF37, #AA8529);
-            color: #0A1914;
-            text-decoration: none;
+            margin-top: 25px;
+            padding: 10px 35px;
+            background-color: #D4AF37;
+            color: #000;
             font-weight: bold;
-            font-size: 1rem;
-            border-radius: 50px;
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
-            transition: all 0.3s;
-        }
-
-        .btn-home:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.5);
-        }
-
-        /* وردەکاری و نەخشی ئیسلامی */
-        .pattern-overlay {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48cGF0aCBkPSJNMjAgMGwyMCAyMC0yMCAyMEwwIDIwem0wIDQuMkw0LjIgMjAgMjAgMzUuOCAzNS44IDIwIDIwIDQuMnoiIGZpbGw9IiNkNGFmMzciIGZpbGwtb3BhY2l0eT0iMC4wNCIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+');
-            pointer-events: none;
-            z-index: 0;
-            border-radius: 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+            font-family: 'Rudaw', sans-serif;
         }
     </style>
 </head>
 <body>
 
-    <div class="stars"></div>
+<div class="column">
+  <div class="content">
+    
+    <h2 class="eid-title">جەژنی قوربانتان پیرۆز 🌙</h2>
+    
+    <p class="greeting">
+        بە بۆنەی هاتنەوەی جەژنی قوربانی پیرۆزەوە، جوانترین پیرۆزبایی ئاراستەی ئێوە و خێزانە بەڕێزەکانتان دەکەین. هیوادارین قوربانییەکانتان قبوڵ بێت و هەموو ڕۆژێکتان هەر جەژن و خۆشی بێت. 🤍
+    </p>
 
-    <div class="container">
-        <div class="eid-card">
-            <div class="pattern-overlay"></div>
-            
-            <div class="moon-icon">🌙</div>
-            
-            <h1>جەژنی قوربانتان پیرۆز</h1>
-            
-            <p class="greeting-text">
-                بە بۆنەی هاتنەوەی جەژنی قوربانی پیرۆزەوە، جوانترین پیرۆزبایی ئاراستەی ئێوە و خێزانە بەڕێزەکانتان دەکەین.<br>
-                هیوادارین قوربانی و نزاکانتان قبوڵ بێت و هەموو ڕۆژێکتان جەژن و خۆشی بێت. ✨
-            </p>
-          <p class="greeting-text">
-                بەمزووانە پێشبڕکێی پڕایم دەست پێدەکات خۆتان ئامادە بکەن!
-          </p>
-
-            <h3 style="color: #fff; font-size: 1rem; margin-bottom: 15px;">ئەمساڵ قوربانییەکەتان کامەیە؟ 👇</h3>
-
-            <div class="animals-container">
-                <div class="animal-box">
-                    <span class="animal-emoji">🐑</span>
-                    <span class="animal-name">مەڕ</span>
-                </div>
-                <div class="animal-box" style="transform: translateY(-10px);"> <span class="animal-emoji">🐄</span>
-                    <span class="animal-name">مانگا</span>
-                </div>
-                <div class="animal-box">
-                    <span class="animal-emoji">🐐</span>
-                    <span class="animal-name">بزن</span>
-                </div>
-            </div>
-
-            <a href="#" class="btn-home" onclick="history.back(); return false;">سوپاس، جەژنی تۆش پیرۆز 🤍</a>
-            
+    <div class="animals-row">
+        <div class="animal-item">
+            <span class="animal-emoji">🐑</span>
+            <span class="animal-name">مەڕ</span>
         </div>
-        
-        <p style="margin-top: 20px; color: rgba(255,255,255,0.4); font-size: 0.8rem;">
-            Powered by Snapchat Prime Team
-        </p>
+        <div class="animal-item">
+            <span class="animal-emoji">🐄</span>
+            <span class="animal-name">مانگا</span>
+        </div>
+        <div class="animal-item">
+            <span class="animal-emoji">🐐</span>
+            <span class="animal-name">بزن</span>
+        </div>
     </div>
+
+    <div class="announcement-box">
+        <h3>⚠️ ئاگادارییەکی گرنگ</h3>
+        <p>بەم زووانە پێشبڕکێی گەورەی <b>Snapchat Prime</b> دەست پێدەکات! خۆتان ئامادە بکەن بۆ بردنەوەی کلیلی سناپ ئێڵیت. 🚀</p>
+    </div>
+
+    <button onclick="history.back()" class="btn-close">باشە، سوپاس</button>
+
+  </div>
+</div>
 
 </body>
 </html>
