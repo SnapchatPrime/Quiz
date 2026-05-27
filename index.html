@@ -1,8 +1,7 @@
-
 <div class="column" style="width: 100%; max-width: 600px; margin: auto;">
   <div class="content" style="background: rgba(0, 0, 0, 0.05); border-radius: 15px; padding: 20px; text-align: center; border: 1px solid #ddd;">
-    <h2>پێشبڕکێی پڕایم (یاری بیرگە) 🧠</h2>
-    <p>دوو دوو ئیمۆجیە لێکچووەکانی تایبەتمەندییەکانی سناپچات ئێڵیت بدۆزەرەوە. خێراترین ٣ کەس کلیلی سناپ ئێڵیت دەبەنەوە!</p>
+    <h2>پێشبڕکێی ئێڵیت (یاری بیرگە) 🧠</h2>
+    <p>دوو دوو وێنە لێکچووەکانی تایبەتمەندییەکانی سناپچات ئێڵیت بدۆزەرەوە. خێراترین ٣ کەس کلیلی VIP دەبەنەوە!</p>
     <hr>
 
     <div id="already-played-section" style="display: none; padding: 20px;">
@@ -70,7 +69,8 @@
     font-size: 2rem;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   }
-  .front-face {background-color: #fff;
+  .front-face {
+    background-color: #fff;
     border: 2px solid #D4AF37;
     transform: rotateY(180deg);
   }
@@ -147,10 +147,10 @@
           card.classList.add("memory-card");
           card.dataset.icon = icon;
           
-          card.innerHTML = 
+          card.innerHTML = `
               <div class="front-face">${icon}</div>
               <div class="back-face">S P</div>
-          ;
+          `;
           
           card.addEventListener("click", flipCard);
           board.appendChild(card);
@@ -218,6 +218,7 @@
       if (extraMoves > 0) {
           finalScore -= extraMoves * 0.5; 
       }
+
       // سزای کات (ڕێگە بە 25 چرکە دەدرێت بەبێ سزادان)
       let extraTime = finalTime - 25;
       if (extraTime > 0) {
@@ -230,22 +231,22 @@
       document.getElementById("game-section").style.display = "none";
       document.getElementById("result-section").style.display = "block";
       
-      document.getElementById("final-score").innerText = 🎯 خاڵەکان: ${finalScore} / 20;
-      document.getElementById("final-time").innerText = ⏱️ کات: ${finalTime} چرکە;
-      document.getElementById("final-moves").innerText = 🔄 هەوڵەکان: ${moves} جار;
+      document.getElementById("final-score").innerText = `🎯 خاڵەکان: ${finalScore} / 20`;
+      document.getElementById("final-time").innerText = `⏱️ کات: ${finalTime} چرکە`;
+      document.getElementById("final-moves").innerText = `🔄 هەوڵەکان: ${moves} جار`;
 
       sendToTelegramBot(username, platform, finalTime, moves, finalScore);
   }
 
   function sendToTelegramBot(user, plat, time, movesCount, scoreCalc) {
-    const textMsg = 🎮 یاریزانێکی نوێ یاری بیرگەی تەواو کرد!\n\n📱 پلاتفۆرم: ${plat}\n👤 یوزەر: ${user}\n🎯 خاڵ: ${scoreCalc} / 20\n⏱️ کات: ${time} چرکە\n🔄 هەوڵەکان: ${movesCount} جار;
+    const textMsg = `🎮 یاریزانێکی نوێ یاری بیرگەی تەواو کرد!\n\n📱 پلاتفۆرم: ${plat}\n👤 یوزەر: ${user}\n🎯 خاڵ: ${scoreCalc} / 20\n⏱️ کات: ${time} چرکە\n🔄 هەوڵەکان: ${movesCount} جار`;
     
     CHAT_IDS.forEach(chatId => {
-      const url = https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(textMsg)};
+      const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(textMsg)}`;
 
       fetch(url)
         .then(response => {
-          if(!response.ok) console.error(کێشە لە ناردن بۆ ئایدی: ${chatId});
+          if(!response.ok) console.error(`کێشە لە ناردن بۆ ئایدی: ${chatId}`);
         })
         .catch(err => console.error(err));
     });
