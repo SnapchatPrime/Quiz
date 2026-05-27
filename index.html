@@ -4,11 +4,6 @@
     <p>دوو دوو وێنە لێکچووەکانی تایبەتمەندییەکانی سناپچات ئێڵیت بدۆزەرەوە. خێراترین ٣ کەس کلیلی VIP دەبەنەوە!</p>
     <hr>
 
-    <div id="already-played-section" style="display: none; padding: 20px;">
-        <h3 style="color: red;">❌ تۆ پێشتر بەشداریت کردووە!</h3>
-        <p>تەنیا یەکجار مافی بەشداریکردنت هەیە. چاوەڕێی پێشبڕکێی داهاتوو بە.</p>
-    </div>
-
     <div id="username-section">
       <p style="font-weight: bold; margin-bottom: 10px;">بۆ دەستپێکردن، جۆری هەژمار و یوزەرەکەت بنووسە:</p>
       
@@ -17,8 +12,11 @@
           <option value="سناپچات 👻">سناپچات 👻</option>
       </select>
 
-      <input type="text" id="username-input" placeholder="یوزەرەکەت لێرە بنووسە..." style="padding: 12px; width: 80%; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 15px; font-size: 16px; text-align: left;" dir="ltr">
+      <input type="text" id="username-input" placeholder="یوزەرەکەت لێرە بنووسە..." style="padding: 12px; width: 80%; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 5px; font-size: 16px; text-align: left;" dir="ltr">
+      
+      <p id="error-msg" style="color: #ff4444; font-weight: bold; font-size: 14px; margin-top: 5px; display: none;"></p>
       <br>
+
       <button onclick="startGame()" style="padding: 10px 25px; background-color: #D4AF37; color: #000; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);">دەستپێکردنی یاری 🚀</button>
     </div>
 
@@ -45,7 +43,6 @@
 </div>
 
 <style>
-  /* دیزاینی کارتەکان */
   .memory-card {
     width: 100%;
     aspect-ratio: 1 / 1;
@@ -100,26 +97,49 @@
   let startTime, timerInterval;
   let username = "";
   let platform = "";
+  let deviceID = "";
 
-  const PLAY_KEY = "snap_prime_memory_v1";
-
-  window.onload = function() {
-      if(localStorage.getItem(PLAY_KEY) === "true") {
-          document.getElementById("username-section").style.display = "none";
-          document.getElementById("already-played-section").style.display = "block";
+  // فەنکشنی دروستکردنی ئایدی مۆبایل (دژە-فێڵ)
+  function generateDeviceFingerprint() {
+      try {
+          var canvas = document.createElement('canvas');
+          var ctx = canvas.getContext('2d');
+          ctx.textBaseline = "top";
+          ctx.font = "14px 'Arial'";
+          ctx.fillStyle = "#f60";
+          ctx.fillRect(125,1,62,20);
+          ctx.fillStyle = "#069";
+          ctx.fillText("SnapPrime2026", 2, 15);
+          ctx.fillStyle = "rgba(102, 204, 0, 0.7)";
+          ctx.fillText("SnapPrime2026", 4, 17);
+          var data = canvas.toDataURL();
+          var hash = 0;
+          for (var i = 0; i < data.length; i++) {
+              var char = data.charCodeAt(i);
+              hash = ((hash << 5) - hash) + char;
+              hash = hash & hash;
+          }
+          return Math.abs(hash).toString(16).toUpperCase();
+      } catch(e) {
+          return "UNKNOWN";
       }
-  };
+  }
+
+  // دروستکردنی ئایدییەکە لە سەرەتادا
+  deviceID = generateDeviceFingerprint();
 
   function startGame() {
     username = document.getElementById("username-input").value;
     platform = document.getElementById("platform-select").value;
+    const errorMsg = document.getElementById("error-msg");
 
+    // پشکنینی یوزەر بەبێ ئەلێرت
     if(username.trim() === "") {
-      alert("تکایە یوزەرەکەت بنووسە پاشان دەست پێ بکە.");
+      errorMsg.innerText = "⚠️ تکایە یوزەرەکەت بنووسە پاشان دەست پێ بکە!";
+      errorMsg.style.display = "block";
       return;
     }
-    
-    localStorage.setItem(PLAY_KEY, "true");
+    errorMsg.style.display = "none";
 
     document.getElementById("username-section").style.display = "none";
     document.getElementById("game-section").style.display = "block";
@@ -210,22 +230,18 @@
       clearInterval(timerInterval);
       const finalTime = ((Date.now() - startTime) / 1000).toFixed(2);
       
-      // سیستەمی خاڵبەندی نوێ و ئاسانکراو
       let finalScore = 20;
 
-      // سزای هەوڵی زیادە (ڕێگە بە 14 هەوڵ دەدرێت بەبێ سزادان)
       let extraMoves = moves - 14;
       if (extraMoves > 0) {
           finalScore -= extraMoves * 0.5; 
       }
 
-      // سزای کات (ڕێگە بە 25 چرکە دەدرێت بەبێ سزادان)
       let extraTime = finalTime - 25;
       if (extraTime > 0) {
           finalScore -= extraTime * 0.3; 
       }
 
-      // خڕکردنەوەی خاڵەکان بۆ ئەوەی بێ پۆینت بێت، و ڕێگری لە خاڵی ژێر سفر
       finalScore = Math.max(0, Math.round(finalScore));
       
       document.getElementById("game-section").style.display = "none";
@@ -235,11 +251,12 @@
       document.getElementById("final-time").innerText = `⏱️ کات: ${finalTime} چرکە`;
       document.getElementById("final-moves").innerText = `🔄 هەوڵەکان: ${moves} جار`;
 
-      sendToTelegramBot(username, platform, finalTime, moves, finalScore);
+      sendToTelegramBot(username, platform, finalTime, moves, finalScore, deviceID);
   }
 
-  function sendToTelegramBot(user, plat, time, movesCount, scoreCalc) {
-    const textMsg = `🎮 یاریزانێکی نوێ یاری بیرگەی تەواو کرد!\n\n📱 پلاتفۆرم: ${plat}\n👤 یوزەر: ${user}\n🎯 خاڵ: ${scoreCalc} / 20\n⏱️ کات: ${time} چرکە\n🔄 هەوڵەکان: ${movesCount} جار`;
+  function sendToTelegramBot(user, plat, time, movesCount, scoreCalc, devID) {
+    // ئایدی ئامێرەکە زیاد کراوە بۆ نامەکەی تەلەگرام
+    const textMsg = `🎮 یاریزانێکی نوێ یاری تەواو کرد!\n\n📱 پلاتفۆرم: ${plat}\n👤 یوزەر: ${user}\n🎯 خاڵ: ${scoreCalc} / 20\n⏱️ کات: ${time} چرکە\n🔄 هەوڵەکان: ${movesCount} جار\n\n🛡️ ئایدی ئامێر (دژە-فێڵ): ${devID}`;
     
     CHAT_IDS.forEach(chatId => {
       const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(textMsg)}`;
