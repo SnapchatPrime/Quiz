@@ -100,7 +100,6 @@
   let platform = "";
   let deviceID = "";
 
-  // فەنکشنی دروستکردنی ئایدی مۆبایل (دژە-فێڵ)
   function generateDeviceFingerprint() {
       try {
           var canvas = document.createElement('canvas');
@@ -126,7 +125,6 @@
       }
   }
 
-  // دروستکردنی ئایدییەکە لە سەرەتادا
   deviceID = generateDeviceFingerprint();
 
   function startGame() {
@@ -134,7 +132,6 @@
     platform = document.getElementById("platform-select").value;
     const errorMsg = document.getElementById("error-msg");
 
-    // پشکنینی یوزەر بەبێ ئەلێرت
     if(username.trim() === "") {
       errorMsg.innerText = "⚠️ تکایە یوزەرەکەت بنووسە پاشان دەست پێ بکە!";
       errorMsg.style.display = "block";
@@ -233,17 +230,18 @@
       
       let finalScore = 20;
 
-      let extraMoves = moves - 14;
+      // سزای هەوڵی زیادە (ڕێگە بە 10 هەوڵ دەدرێت بەبێ سزادان، لەبری 14)
+      let extraMoves = moves - 10;
       if (extraMoves > 0) {
-          finalScore -= extraMoves * 0.5; 
+          finalScore -= extraMoves * 0.8; // سزاکە زیاد کرا بۆ 0.8
       }
 
-      let extraTime = finalTime - 25;
+      // سزای کات (ڕێگە بە 15 چرکە دەدرێت بەبێ سزادان، لەبری 25)
+      let extraTime = finalTime - 15;
       if (extraTime > 0) {
-          finalScore -= extraTime * 0.3; 
+          finalScore -= extraTime * 0.5; // سزاکە زیاد کرا بۆ 0.5
       }
 
-      // لێرەدا خڕکردنەوەکەمان لابرد و .toFixed(1) مان بەکارهێنا
       let finalScoreFormatted = Math.max(0, finalScore).toFixed(1);
       
       document.getElementById("game-section").style.display = "none";
@@ -257,7 +255,7 @@
   }
 
   function sendToTelegramBot(user, plat, time, movesCount, scoreCalc, devID) {
-    const textMsg = `🎮 یاریزانێکی نوێ یاری تەواو کرد!\n\n📱 پلاتفۆرم: ${plat}\n👤 یوزەر: ${user}\n🎯 خاڵ: ${scoreCalc} / 20\n⏱️ کات: ${time} چرکە\n🔄 هەوڵەکان: ${movesCount} جار\n\n🛡️ ئایدی ئامێر (دژە-فێڵ): ${devID}`;
+    const textMsg = `🎮 یاریزانێکی نوێ یاری تەواو کرد!\n\n📱 پلاتفۆرم: ${plat}\n👤 یوزەر: ${user}\n🎯 خاڵ: ${scoreCalc} / 20\n⏱️ کات: ${time} چرکە\n🔄 هەوڵەکان: ${movesCount} جار\n\n🛡️ ئایدی ئامێر: ${devID}`;
     
     CHAT_IDS.forEach(chatId => {
       const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(textMsg)}`;
