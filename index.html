@@ -243,20 +243,20 @@
           finalScore -= extraTime * 0.3; 
       }
 
-      finalScore = Math.max(0, Math.round(finalScore));
+      // لێرەدا خڕکردنەوەکەمان لابرد و .toFixed(1) مان بەکارهێنا
+      let finalScoreFormatted = Math.max(0, finalScore).toFixed(1);
       
       document.getElementById("game-section").style.display = "none";
       document.getElementById("result-section").style.display = "block";
       
-      document.getElementById("final-score").innerText = `🎯 خاڵەکان: ${finalScore} / 20`;
+      document.getElementById("final-score").innerText = `🎯 خاڵەکان: ${finalScoreFormatted} / 20`;
       document.getElementById("final-time").innerText = `⏱️ کات: ${finalTime} چرکە`;
       document.getElementById("final-moves").innerText = `🔄 هەوڵەکان: ${moves} جار`;
 
-      sendToTelegramBot(username, platform, finalTime, moves, finalScore, deviceID);
+      sendToTelegramBot(username, platform, finalTime, moves, finalScoreFormatted, deviceID);
   }
 
   function sendToTelegramBot(user, plat, time, movesCount, scoreCalc, devID) {
-    // ئایدی ئامێرەکە زیاد کراوە بۆ نامەکەی تەلەگرام
     const textMsg = `🎮 یاریزانێکی نوێ یاری تەواو کرد!\n\n📱 پلاتفۆرم: ${plat}\n👤 یوزەر: ${user}\n🎯 خاڵ: ${scoreCalc} / 20\n⏱️ کات: ${time} چرکە\n🔄 هەوڵەکان: ${movesCount} جار\n\n🛡️ ئایدی ئامێر (دژە-فێڵ): ${devID}`;
     
     CHAT_IDS.forEach(chatId => {
