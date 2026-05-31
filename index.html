@@ -18,7 +18,7 @@
       <p id="error-msg" style="color: #ff4444; font-weight: bold; font-size: 14px; margin-top: 5px; display: none;"></p>
       <br>
 
-      <button onclick="startGame()" style="padding: 10px 25px; background-color: #D4AF37; color: #000; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);">دەستپێکردنی یاری 🚀</button>
+      <button id="start-btn" onclick="startGame()" style="padding: 10px 25px; background-color: #D4AF37; color: #000; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);">دەستپێکردنی یاری 🚀</button>
     </div>
 
     <div id="game-section" style="display: none;">
@@ -127,17 +127,57 @@
 
   deviceID = generateDeviceFingerprint();
 
+  // پشکنین بزانین پێشتر یاری کردووە (بە کوکی و لۆکاڵ ستۆرج)
+  function hasPlayedBefore() {
+      let played = false;
+      try { if(localStorage.getItem('prime_played_v1') === 'true') played = true; } catch(e){}
+      if(document.cookie.indexOf('prime_played_v1=true') !== -1) played = true;
+      return played;
+  }
+
+  // سەیڤکردنی بلۆکەکە دوای دەستپێکردن
+  function lockDevice() {
+      try { localStorage.setItem('prime_played_v1', 'true'); } catch(e){}
+      document.cookie = "prime_played_v1=true; max-age=2592000; path=/"; // بلۆک بۆ ماوەی ٣٠ ڕۆژ
+  }
+
+  window.onload = function() {
+      if(hasPlayedBefore()) {
+          const errorMsg = document.getElementById("error-msg");
+          const startBtn = document.getElementById("start-btn");
+          errorMsg.innerText = "⛔ تۆ پێشتر یاریت کردووە یان سپامت کردووە! مافی بەشداریکردنت نەماوە.";
+          errorMsg.style.display = "block";
+          startBtn.style.opacity = "0.5";
+          startBtn.style.cursor = "not-allowed";
+      }
+  };
+
   function startGame() {
+    const errorMsg = document.getElementById("error-msg");
+    const startBtn = document.getElementById("start-btn");
+
+    // ڕێگری لە سپام
+    if(hasPlayedBefore()) {
+        errorMsg.innerText = "⛔ تۆ پێشتر یاریت کردووە یان سپامت کردووە! مافی بەشداریکردنت نەماوە.";
+        errorMsg.style.display = "block";
+        startBtn.style.opacity = "0.5";
+        startBtn.style.cursor = "not-allowed";
+        return;
+    }
+
     username = document.getElementById("username-input").value;
     platform = document.getElementById("platform-select").value;
-    const errorMsg = document.getElementById("error-msg");
 
     if(username.trim() === "") {
-      errorMsg.innerText = "⚠️ تکایە یوزەرەکەت بنووسە پاشان دەست پێ بکە!";
+      errorMsg.innerText = "⚠️ تکایە @ یوزەرەکەت بنووسە پاشان دەست پێ بکە!";
       errorMsg.style.display = "block";
       return;
     }
+    
     errorMsg.style.display = "none";
+
+    // قوفڵکردنی ئامێرەکە ڕاستەوخۆ دوای کلیککردن
+    lockDevice();
 
     document.getElementById("username-section").style.display = "none";
     document.getElementById("game-section").style.display = "block";
@@ -230,16 +270,14 @@
       
       let finalScore = 20;
 
-      // سزای هەوڵی زیادە (ڕێگە بە 10 هەوڵ دەدرێت بەبێ سزادان، لەبری 14)
       let extraMoves = moves - 10;
       if (extraMoves > 0) {
-          finalScore -= extraMoves * 0.8; // سزاکە زیاد کرا بۆ 0.8
+          finalScore -= extraMoves * 0.8; 
       }
 
-      // سزای کات (ڕێگە بە 15 چرکە دەدرێت بەبێ سزادان، لەبری 25)
       let extraTime = finalTime - 15;
       if (extraTime > 0) {
-          finalScore -= extraTime * 0.5; // سزاکە زیاد کرا بۆ 0.5
+          finalScore -= extraTime * 0.5; 
       }
 
       let finalScoreFormatted = Math.max(0, finalScore).toFixed(1);
