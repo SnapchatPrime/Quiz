@@ -5,21 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
     <title>ڕاگەیاندنی براوەکان 🏆</title>
     
-    <!-- هێنانی فۆنتی مۆدێرن و جوانی کوردی لە گووگڵ -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
-
     <style>
+        /* بارکردنی فۆنتە کوردییەکە بە شێوەی لۆکاڵی */
         @font-face {
-            font-family: 'Rudaw';
-            src: url('coolfont1.ttf'); 
+            font-family: 'KurdFont';
+            src: url('kurdfont.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
         }
 
         body {
             background-color: #050505;
             color: #ffffff;
-            font-family: 'Vazirmatn', 'Rudaw', 'Segoe UI', Tahoma, sans-serif;
+            /* بەکارهێنانی فۆنتە لۆکاڵییەکە بەسەر هەموو شتێکدا */
+            font-family: 'KurdFont', Tahoma, Arial, sans-serif;
             margin: 0;
             padding: 0;
             min-height: 100vh;
@@ -56,12 +55,12 @@
 
         h2.title {
             color: #D4AF37;
-            font-size: 2.4rem;
-            font-weight: 900;
+            font-size: 2.6rem;
+            font-weight: bold;
             margin-top: 0;
             margin-bottom: 5px;
             text-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
-            letter-spacing: 0.5px;
+            letter-spacing: 0px;
             animation: textGlow 2s infinite alternate;
         }
 
@@ -71,11 +70,10 @@
         }
 
         p.desc {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             color: #ddd;
             margin-bottom: 45px;
             line-height: 1.6;
-            font-weight: 400;
         }
 
         /* شێوازی ڕیزبەندی (Podium) */
@@ -99,10 +97,8 @@
             width: 31%;
             position: relative;
             box-sizing: border-box;
-            
-            /* لێرەدا جوڵەکەم زۆر نەرم کردەوە بۆ ئەوەی ڕەق و لەناکاو نەبێت */
             transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
-            will-change: transform; /* ئەمە ڕێگری لە لاگ دەکات لەسەر مۆبایل */
+            will-change: transform; 
         }
 
         .podium-item:hover {
@@ -111,7 +107,7 @@
 
         /* بەرزی جێگیر کراوە */
         .podium-item.first {
-            height: 225px; 
+            height: 235px; 
             background: linear-gradient(to top, rgba(212, 175, 55, 0.25), rgba(10, 10, 10, 0.9));
             border: 1px solid #D4AF37;
             box-shadow: 0 10px 30px rgba(212, 175, 55, 0.25);
@@ -119,14 +115,14 @@
         }
         
         .podium-item.second { 
-            height: 195px; 
+            height: 200px; 
             border: 1px solid #C0C0C0; 
             background: linear-gradient(to top, rgba(192, 192, 192, 0.15), rgba(10, 10, 10, 0.8));
             box-shadow: 0 5px 15px rgba(192, 192, 192, 0.1); 
         }
         
         .podium-item.third { 
-            height: 175px; 
+            height: 180px; 
             border: 1px solid #CD7F32; 
             background: linear-gradient(to top, rgba(205, 127, 50, 0.15), rgba(10, 10, 10, 0.8));
             box-shadow: 0 5px 15px rgba(205, 127, 50, 0.1); 
@@ -148,7 +144,7 @@
         .second .winner-img { width: 68px; height: 68px; border: 3px solid #C0C0C0; }
         .third .winner-img { width: 63px; height: 63px; border: 3px solid #CD7F32; }
 
-        /* تاج بۆ یەکەم (بە جوڵەی نەرمەوە) */
+        /* تاج بۆ یەکەم */
         .crown {
             position: absolute;
             top: -42px;
@@ -176,53 +172,53 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-weight: 900;
+            font-weight: bold;
             color: #000;
-            font-size: 1rem;
+            font-size: 1.1rem;
             box-shadow: 0 3px 8px rgba(0,0,0,0.6);
-            font-family: 'Vazirmatn', sans-serif;
+            /* دڵنیابوونەوە کە ژمارەکانیش هەمان فۆنتن */
+            font-family: 'KurdFont', sans-serif;
+            padding-top: 2px;
         }
 
-        .first .rank-badge { background: linear-gradient(135deg, #F9E596, #D4AF37); width: 32px; height: 32px; font-size: 1.2rem; bottom: -12px; border: 2px solid #000; }
+        .first .rank-badge { background: linear-gradient(135deg, #F9E596, #D4AF37); width: 32px; height: 32px; font-size: 1.3rem; bottom: -12px; border: 2px solid #000; }
         .second .rank-badge { background: linear-gradient(135deg, #e6e6e6, #C0C0C0); }
         .third .rank-badge { background: linear-gradient(135deg, #e6a76c, #CD7F32); }
 
         /* زانیاری یوزەرەکان */
         .username {
-            font-size: 1rem;
-            font-weight: 700;
+            font-size: 1.15rem;
+            font-weight: bold;
             color: #fff;
             margin: 0 0 6px 0;
             direction: ltr;
             word-break: break-all;
         }
-        .first .username { font-size: 1.15rem; color: #F9E596; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+        .first .username { font-size: 1.25rem; color: #F9E596; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
 
         .score {
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: #bbb;
-            font-weight: 400;
+            font-weight: bold;
             margin-top: auto;
         }
-        .first .score { font-weight: 700; color: #fff; background: rgba(212, 175, 55, 0.2); padding: 2px 8px; border-radius: 12px; }
+        .first .score { color: #fff; background: rgba(212, 175, 55, 0.2); padding: 2px 10px; border-radius: 12px; }
 
         /* دوگمەی تەلەگرام */
         .btn-telegram {
             display: inline-block;
             margin-top: 15px;
-            padding: 14px 40px;
+            padding: 12px 40px;
             background: linear-gradient(135deg, #D4AF37, #AA8529);
             color: #050505;
-            font-weight: 900;
+            font-weight: bold;
             border-radius: 50px;
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             text-decoration: none;
             box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
-            
-            /* ئەمەش جوڵەکەی نەرم کرایەوە بۆ سەر مۆبایل */
             transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
-            letter-spacing: 0.5px;
+            letter-spacing: 0px;
         }
 
         .btn-telegram:hover {
@@ -241,7 +237,6 @@
 
     <div class="podium-container">
         
-        <!-- پلەی دووەم -->
         <div class="podium-item second">
             <div class="img-wrapper">
                 <img src="https://i.postimg.cc/522dcgwN/IMG-20260601-164740-454.jpg" alt="دووەم" class="winner-img">
@@ -251,7 +246,6 @@
             <span class="score">٢٠ خاڵ</span>
         </div>
 
-        <!-- پلەی یەکەم -->
         <div class="podium-item first">
             <div class="crown">👑</div>
             <div class="img-wrapper">
@@ -262,24 +256,16 @@
             <span class="score">٢٠ خاڵ</span>
         </div>
 
-        <!-- پلەی سێیەم -->
         <div class="podium-item third">
             <div class="img-wrapper">
                 <img src="https://i.postimg.cc/gjH5QLjf/IMG-20260601-164814-978.jpg" alt="سێیەم" class="winner-img">
                 <div class="rank-badge">3</div>
             </div>
-            <h3 class="username">Zulayxa</h3>
+            <h3 class="username">Zulayxa🖤</h3>
             <span class="score">١٩.٥ خاڵ</span>
         </div>
 
     </div>
 
     <a href="https://t.me/hamasade" target="_blank" class="btn-telegram">
-        سەردانی کەناڵ بکە ✈️
-    </a>
-
-  </div>
-</div>
-
-</body>
-</html>
+        سەردانی کەناڵ بکە
