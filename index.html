@@ -71,6 +71,25 @@
             margin-bottom: 20px;
         }
 
+        /* ستایلی دوگمەی تەلەگرام بۆ ئەوانەی لە دەرەوە دێن */
+        .btn-redirect {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #0088cc, #005f99);
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-decoration: none;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0, 136, 204, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .btn-redirect:active {
+            transform: scale(0.95);
+        }
+
         /* ستایلی یارییەکە */
         .game-stats {
             display: flex;
@@ -137,6 +156,17 @@
     <p style="color: #ff4444; font-size: 13px; margin-bottom: 10px;">(هەر بەکارهێنەرێک تەنها یەکجار مافی یاریکردنی هەیە)</p>
     <hr>
 
+    <!-- ٠. بەشی ڕێنماییکردن بۆ تەلەگرام (بۆ ئەوانەی لە سناپچاتەوە دێن) -->
+    <div id="redirect-section" style="display: none; padding: 10px;">
+        <h3 style="color: #ff4444; margin-bottom: 10px;">⚠️ ئاگاداری</h3>
+        <p style="color: #ddd; font-size: 15px; line-height: 1.6;">
+            بۆ ڕێگریکردن لە فێڵکردن، ئەم یارییە تەنیا لەناو ئەپی تەلەگرام کار دەکات. تکایە لە ڕێگەی بۆتەکەی ئێمەوە بەشداری بکە.
+        </p>
+        <a href="https://t.me/SHPrimeQuiz_BOT" class="btn-redirect">
+            بڕۆ بۆ بۆتی تەلەگرام ✈️
+        </a>
+    </div>
+
     <!-- ١. بەشی لۆدین -->
     <div id="loading-section">
       <div style="margin: 30px 0;">
@@ -175,9 +205,9 @@
   // لینکی گووگڵ شیتەکە
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwPnW0g6bE4d2iivVqdmyWXQuPLnYCfbrPD3iQK3qD36_B03Qa0rWiWkibcsaK8dfBZ/exec";
   
-  // زانیاری بۆت
+  // زانیاری بۆت و ئایدییەکان
   const BOT_TOKEN = "8755532350:AAHbBSjy3FsuPdNYQ5nE3iHMMXN26-j49Vg"; 
-  const CHAT_IDS = ["5909261841", "708637965"]; // ئەمە ئایدییەکانی ئێوەیە (بۆ ناردنی ئەنجام و بۆ کردنەوەی یارییەکە)
+  const CHAT_IDS = ["5909261841", "708637965"];
 
   const icons = ['👻', '📸', '🍏', '💬', '🚫', '🎨', '👁️', '🔒'];
   let cardsArray = [...icons, ...icons];
@@ -193,28 +223,26 @@
 
   window.onload = function() {
       const user = tg.initDataUnsafe?.user;
-      const errorMsg = document.getElementById("error-msg");
-
+      
+      // ئەگەر لە دەرەوەی تەلەگرام (وەک سناپچات یان کرۆم) کرایەوە
       if (!user) {
-          errorMsg.innerHTML = "⛔ تکایە یارییەکە لەناو بۆتی تەلەگرام بکەرەوە، ناتوانیت لێرە یاری بکەیت.";
-          errorMsg.style.display = "block";
-          document.getElementById("loading-title").style.display = "none";
-          document.getElementById("loading-subtitle").style.display = "none";
+          document.getElementById("loading-section").style.display = "none";
+          document.getElementById("redirect-section").style.display = "block";
           return;
       }
 
+      const errorMsg = document.getElementById("error-msg");
       globalUsername = user.username ? "@" + user.username : user.first_name;
       const currentUserId = user.id.toString();
 
-      // پشکنین بزانین ئایا کەسەکە ئەدیمنە (یەکێکە لە ئێوە)؟
+      // پشکنینی ئەدیمن
       if (CHAT_IDS.includes(currentUserId)) {
-          // ئەگەر ئەدیمن بوو، یەکسەر لۆدینەکە لادەبەین و یارییەکەی بۆ دەکەینەوە (بێ ئەوەی بچێتە گووگڵ شیت)
           document.getElementById("loading-section").style.display = "none";
           startGame();
-          return; // لێرەدا پڕۆسەکە دەوەستێنین بۆ ئەوەی کۆدی خوارەوە جێبەجێ نەبێت
+          return; 
       }
 
-      // ئەگەر کەسێکی ئاسایی بوو، ئەوا دەینێرین بۆ گووگڵ شیتەکە
+      // پشکنینی کەسی ئاسایی لە گووگڵ شیت
       fetch(`${GOOGLE_SCRIPT_URL}?id=${user.id}&username=${encodeURIComponent(globalUsername)}`)
           .then(response => response.json())
           .then(data => {
