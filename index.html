@@ -5,11 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
     <title>پێشبڕکێی پڕایم 🏆</title>
 
-    <!-- هێنانی پەڕگەی فەرمی Telegram Web App -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <style>
-        /* فۆنتە لۆکاڵییەکە */
         @font-face {
             font-family: 'KurdFont';
             src: url('kurdfont.ttf') format('truetype');
@@ -49,101 +47,42 @@
             -webkit-backdrop-filter: blur(12px);
         }
 
-        h2.title {
-            color: #D4AF37;
-            font-size: 1.8rem;
-            margin-top: 0;
-            margin-bottom: 5px;
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-        }
+        h2.title { color: #D4AF37; font-size: 1.8rem; margin-top: 0; margin-bottom: 5px; text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
+        p.desc { font-size: 1rem; color: #ddd; margin-bottom: 20px; line-height: 1.6; }
+        hr { border: 0; height: 1px; background: rgba(255,255,255,0.1); margin-bottom: 20px; }
 
-        p.desc {
-            font-size: 1rem;
-            color: #ddd;
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-
-        hr {
-            border: 0;
-            height: 1px;
-            background: rgba(255,255,255,0.1);
-            margin-bottom: 20px;
-        }
-
-        /* ستایلی دوگمەی تەلەگرام بۆ ئەوانەی لە دەرەوە دێن */
-        .btn-redirect {
+        .btn-redirect, .btn-start {
             display: inline-block;
             margin-top: 15px;
             padding: 12px 30px;
-            background: linear-gradient(135deg, #0088cc, #005f99);
             color: #fff;
             font-weight: bold;
             font-size: 1.1rem;
             text-decoration: none;
             border-radius: 50px;
-            box-shadow: 0 5px 15px rgba(0, 136, 204, 0.4);
             transition: transform 0.2s;
-        }
-
-        .btn-redirect:active {
-            transform: scale(0.95);
-        }
-
-        /* ستایلی یارییەکە */
-        .game-stats {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            background: rgba(255,255,255,0.05);
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-        }
-
-        .game-stats p {
-            margin: 0;
-            font-size: 16px;
-            color: #fff;
-            font-weight: bold;
-        }
-
-        .memory-card {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.4s;
             cursor: pointer;
+            border: none;
+            font-family: 'KurdFont', Tahoma, sans-serif;
         }
-        .memory-card.flip {
-            transform: rotateY(180deg);
-        }
-        .front-face, .back-face {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            border-radius: 8px;
-            backface-visibility: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2rem;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        }
-        .front-face {
-            background-color: #fff;
-            border: 2px solid #D4AF37;
-            transform: rotateY(180deg);
-        }
-        .back-face {
-            background-color: #222;
-            border: 2px solid #D4AF37;
-            color: #D4AF37;
-            background-image: radial-gradient(circle, #333 10%, transparent 10%), radial-gradient(circle, #333 10%, transparent 10%);
-            background-size: 10px 10px;
-        }
+
+        .btn-redirect { background: linear-gradient(135deg, #0088cc, #005f99); box-shadow: 0 5px 15px rgba(0, 136, 204, 0.4); }
+        .btn-start { background: linear-gradient(135deg, #D4AF37, #AA8529); color: #000; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4); font-size: 1.2rem; padding: 12px 40px;}
+        .btn-redirect:active, .btn-start:active { transform: scale(0.95); }
+
+        .game-stats { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(212, 175, 55, 0.3); }
+        .game-stats p { margin: 0; font-size: 16px; color: #fff; font-weight: bold; }
+
+        .memory-card { width: 100%; aspect-ratio: 1 / 1; position: relative; transform-style: preserve-3d; transition: transform 0.4s; cursor: pointer; }
+        .memory-card.flip { transform: rotateY(180deg); }
+        .front-face, .back-face { width: 100%; height: 100%; position: absolute; border-radius: 8px; backface-visibility: hidden; display: flex; justify-content: center; align-items: center; font-size: 2rem; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+        .front-face { background-color: #fff; border: 2px solid #D4AF37; transform: rotateY(180deg); }
+        .back-face { background-color: #222; border: 2px solid #D4AF37; color: #D4AF37; background-image: radial-gradient(circle, #333 10%, transparent 10%), radial-gradient(circle, #333 10%, transparent 10%); background-size: 10px 10px; }
+
+        /* ستایلی نموونەی فێرکاری */
+        .tutorial-cards { display: flex; justify-content: center; gap: 15px; margin: 20px 0; }
+        .t-card { width: 70px; height: 70px; background: #fff; border: 2px solid #D4AF37; border-radius: 8px; display: flex; justify-content: center; align-items: center; font-size: 2.5rem; animation: pulse 2s infinite alternate; }
+        @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 5px rgba(212, 175, 55, 0.5); } 100% { transform: scale(1.05); box-shadow: 0 0 15px rgba(212, 175, 55, 0.8); } }
     </style>
 </head>
 <body>
@@ -156,19 +95,23 @@
     <p style="color: #ff4444; font-size: 13px; margin-bottom: 10px;">(هەر بەکارهێنەرێک تەنها یەکجار مافی یاریکردنی هەیە)</p>
     <hr>
 
-    <!-- ٠. بەشی ڕێنماییکردن بۆ تەلەگرام (بۆ ئەوانەی لە سناپچاتەوە دێن) -->
-    <div id="redirect-section" style="display: none; padding: 10px;">
-        <h3 style="color: #ff4444; margin-bottom: 10px;">⚠️ ئاگاداری</h3>
-        <p style="color: #ddd; font-size: 15px; line-height: 1.6;">
-            بۆ ڕێگریکردن لە فێڵکردن، ئەم یارییە تەنیا لەناو ئەپی تەلەگرام کار دەکات. تکایە لە ڕێگەی بۆتەکەی ئێمەوە بەشداری بکە.
+    <!-- ٠. بەشی "بەم زووانە" (کاتێک یارییەکە داخراوە) -->
+    <div id="coming-soon-section" style="display: none; padding: 20px 10px;">
+        <h3 style="color: #D4AF37; font-size: 1.6rem; margin-bottom: 10px;">⏳ بەم زووانە...</h3>
+        <p style="color: #ddd; font-size: 1.1rem; line-height: 1.6;">
+            ئامادەبە! کاتژمێری سفری پێشبڕکێکە نزیک بووەتەوە. چاوەڕێی ڕاگەیاندنی فەرمی بە.
         </p>
-        <a href="https://t.me/SHPrimeQuiz_BOT" class="btn-redirect">
-            بڕۆ بۆ بۆتی تەلەگرام ✈️
-        </a>
     </div>
 
-    <!-- ١. بەشی لۆدین -->
-    <div id="loading-section">
+    <!-- ١. بەشی ڕێنماییکردن بۆ تەلەگرام (لە براوسەری دەرەوە) -->
+    <div id="redirect-section" style="display: none; padding: 10px;">
+        <h3 style="color: #ff4444; margin-bottom: 10px;">⚠️ ئاگاداری</h3>
+        <p style="color: #ddd; font-size: 15px; line-height: 1.6;">بۆ ڕێگریکردن لە فێڵکردن، ئەم یارییە تەنیا لەناو ئەپی تەلەگرام کار دەکات.</p>
+        <a href="https://t.me/SHPrimeQuiz_BOT" class="btn-redirect">بڕۆ بۆ بۆتی تەلەگرام ✈️</a>
+    </div>
+
+    <!-- ٢. بەشی لۆدین (پشکنینی ئەکاونت) -->
+    <div id="loading-section" style="display: none;">
       <div style="margin: 30px 0;">
           <h3 id="loading-title" style="color: #D4AF37;">⏳ تکایە چاوەڕێبە...</h3>
           <p id="loading-subtitle" style="color: #bbb; font-size: 14px;">خەریکی سەلماندنی هەژمارەکەتین</p>
@@ -176,18 +119,36 @@
       <p id="error-msg" style="color: #ff4444; font-weight: bold; font-size: 15px; display: none; background: rgba(255,0,0,0.1); padding: 10px; border-radius: 8px;"></p>
     </div>
 
-    <!-- ٢. بەشی یاری -->
+    <!-- ٣. بەشی فێرکاری (پێش دەستپێکردن دەردەکەوێت) -->
+    <div id="tutorial-section" style="display: none; padding: 10px;">
+        <h3 style="color: #28a745; margin-bottom: 15px;">چۆنیەتی یاریکردن 💡</h3>
+        <p style="color: #ddd; font-size: 15px; line-height: 1.6;">
+            یارییەکە زۆر ئاسانە! لە پشت کارتەکانەوە وێنەی تایبەتمەندییەکان شاردراوەتەوە. دەبێت کارتەکان هەڵبدەیتەوە و هەر دوو وێنەی هاوشێوە بەیەکەوە بدۆزیتەوە.
+        </p>
+        
+        <!-- نموونەی ئیمۆجییەکان -->
+        <div class="tutorial-cards">
+            <div class="t-card">👻</div>
+            <div class="t-card">👻</div>
+        </div>
+        
+        <p style="color: #D4AF37; font-size: 14px; font-weight: bold; margin-bottom: 25px;">
+            تێبینی: تا خێراتر بیت و هەوڵی کەمتر بدەیت، خاڵی زیاتر بەدەست دەهێنیت!
+        </p>
+        
+        <button class="btn-start" onclick="startGame()">دەستپێکردن 🚀</button>
+    </div>
+
+    <!-- ٤. بەشی یاری -->
     <div id="game-section" style="display: none;">
       <div class="game-stats">
         <p>هەوڵەکان: <span id="moves-text" style="color: #D4AF37;">0</span></p>
         <p>کات: <span id="time-text" style="color: #ff4444;">0.0</span> <span style="font-size:12px">چرکە</span></p>
       </div>
-      
-      <div id="memory-board" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; perspective: 1000px; margin-bottom: 10px;">
-      </div>
+      <div id="memory-board" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; perspective: 1000px; margin-bottom: 10px;"></div>
     </div>
 
-    <!-- ٣. بەشی ئەنجام -->
+    <!-- ٥. بەشی ئەنجام -->
     <div id="result-section" style="display: none;">
       <h3 style="color: #28a745; font-size: 1.5rem;">ئافەرین! یارییەکەت تەواو کرد 🎉</h3>
       <div style="background: rgba(255,255,255,0.05); border-radius: 8px; padding: 20px; border: 1px solid #D4AF37; margin-top: 15px;">
@@ -202,47 +163,50 @@
 </div>
 
 <script>
-  // لینکی گووگڵ شیتەکە
+  // ==========================================
+  // کۆنتڕۆڵی سەرەکی یارییەکە ⚙️
+  // ئەگەر false بێت، کەس ناتوانێت یاری بکات و دەڵێت بەم زووانە.
+  // کاتێک ویستت یارییەکە دەستپێبکات بیكە بە true
+  const isGameActive = false; 
+  // ==========================================
+
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwPnW0g6bE4d2iivVqdmyWXQuPLnYCfbrPD3iQK3qD36_B03Qa0rWiWkibcsaK8dfBZ/exec";
-  
-  // زانیاری بۆت و ئایدییەکان
   const BOT_TOKEN = "8755532350:AAHbBSjy3FsuPdNYQ5nE3iHMMXN26-j49Vg"; 
   const CHAT_IDS = ["5909261841", "708637965"];
 
   const icons = ['👻', '📸', '🍏', '💬', '🚫', '🎨', '👁️', '🔒'];
   let cardsArray = [...icons, ...icons];
-
   let hasFlippedCard = false, lockBoard = false;
-  let firstCard, secondCard;
-  let matchedPairs = 0, moves = 0;
-  let startTime, timerInterval;
-  let globalUsername = "";
+  let firstCard, secondCard, matchedPairs = 0, moves = 0, startTime, timerInterval, globalUsername = "";
 
   const tg = window.Telegram.WebApp;
   tg.expand();
 
   window.onload = function() {
+      // پشکنینی ئەوەی ئایا یارییەکە کراوەتەوە بۆ هەمووان؟
+      if (!isGameActive) {
+          document.getElementById("coming-soon-section").style.display = "block";
+          return; // لێرەدا پڕۆسەکە دەوەستێت و ناچێتە پێشەوە
+      }
+
       const user = tg.initDataUnsafe?.user;
       
-      // ئەگەر لە دەرەوەی تەلەگرام (وەک سناپچات یان کرۆم) کرایەوە
       if (!user) {
-          document.getElementById("loading-section").style.display = "none";
           document.getElementById("redirect-section").style.display = "block";
           return;
       }
 
+      document.getElementById("loading-section").style.display = "block";
       const errorMsg = document.getElementById("error-msg");
       globalUsername = user.username ? "@" + user.username : user.first_name;
       const currentUserId = user.id.toString();
 
-      // پشکنینی ئەدیمن
       if (CHAT_IDS.includes(currentUserId)) {
           document.getElementById("loading-section").style.display = "none";
-          startGame();
+          document.getElementById("tutorial-section").style.display = "block";
           return; 
       }
 
-      // پشکنینی کەسی ئاسایی لە گووگڵ شیت
       fetch(`${GOOGLE_SCRIPT_URL}?id=${user.id}&username=${encodeURIComponent(globalUsername)}`)
           .then(response => response.json())
           .then(data => {
@@ -253,7 +217,8 @@
                   document.getElementById("loading-subtitle").style.display = "none";
               } else if (data.status === "ok") {
                   document.getElementById("loading-section").style.display = "none";
-                  startGame();
+                  // لەبری ئەوەی یارییەکە ڕاستەوخۆ دەست پێ بکات، سەرەتا فێرکارییەکەی پیشان دەدەین
+                  document.getElementById("tutorial-section").style.display = "block";
               }
           })
           .catch(error => {
@@ -262,8 +227,9 @@
           });
   };
 
-  // --- بەشی یارییەکە ---
+  // کاتێک یاریزان کلیک لە "دەستپێکردن" دەکات ئەمە کار دەکات
   function startGame() {
+    document.getElementById("tutorial-section").style.display = "none";
     document.getElementById("game-section").style.display = "block";
     setupBoard();
     startTime = Date.now();
@@ -292,7 +258,6 @@
 
   function flipCard() {
       if (lockBoard || this === firstCard) return;
-      
       tg.HapticFeedback.impactOccurred("light");
       this.classList.add("flip");
       
@@ -315,7 +280,6 @@
   function disableCards() {
       firstCard.removeEventListener("click", flipCard);
       secondCard.removeEventListener("click", flipCard);
-      
       tg.HapticFeedback.notificationOccurred("success");
       
       matchedPairs++;
