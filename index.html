@@ -5,18 +5,13 @@
     <p style="color: #d9534f; font-size: 14px; font-weight: bold;">تێبینی: هەر بەکارهێنەرێک تەنها یەکجار مافی یاریکردنی هەیە.</p>
     <hr>
 
-    <!-- بەشی لۆگین بە تەلەگرام -->
-    <div id="login-section">
-      <p style="font-weight: bold; margin-bottom: 15px; font-size: 16px;">بۆ دەستپێکردن، تکایە لە ڕێگەی تەلەگرامەوە خۆت تۆمار بکە:</p>
-      
-      <!-- دوگمەی فەرمی تەلەگرام -->
-      <script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-login="SHPrimeQuiz_BOT" data-size="large" data-onauth="onTelegramAuth(user)"></script>
-      
-      <p id="loading-msg" style="color: #0088cc; font-weight: bold; font-size: 15px; margin-top: 15px; display: none;">⏳ چاوەڕێبە، دڵنیا دەبینەوە لە ئەکاونتەکەت...</p>
+    <!-- بەشی لۆدین و پشکنین -->
+    <div id="loading-section">
+      <p id="loading-msg" style="color: #0088cc; font-weight: bold; font-size: 16px; margin-top: 15px;">⏳ تکایە چاوەڕێبە، پەیوەندی دەبەسترێت...</p>
       <p id="error-msg" style="color: #ff4444; font-weight: bold; font-size: 15px; margin-top: 15px; display: none;"></p>
     </div>
 
-    <!-- بەشی یاری (لەسەرەتادا شاراوەیە) -->
+    <!-- بەشی یاری -->
     <div id="game-section" style="display: none;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: #fff; padding: 10px; border-radius: 8px; border: 1px solid #ddd;">
         <p style="margin: 0; font-size: 15px; color: #333; font-weight: bold;">هەوڵەکان: <span id="moves-text" style="color: #9b59b6;">0</span></p>
@@ -41,76 +36,51 @@
 </div>
 
 <style>
-  .memory-card {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.4s;
-    cursor: pointer;
-  }
-  .memory-card.flip {
-    transform: rotateY(180deg);
-  }
-  .front-face, .back-face {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    border-radius: 8px;
-    backface-visibility: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  }
-  .front-face {
-    background-color: #fff;
-    border: 2px solid #D4AF37;
-    transform: rotateY(180deg);
-  }
-  .back-face {
-    background-color: #222;
-    border: 2px solid #444;
-    color: #D4AF37;
-    background-image: radial-gradient(circle, #333 10%, transparent 10%), radial-gradient(circle, #333 10%, transparent 10%);
-    background-size: 10px 10px;
-  }
+  .memory-card { width: 100%; aspect-ratio: 1 / 1; position: relative; transform-style: preserve-3d; transition: transform 0.4s; cursor: pointer; }
+  .memory-card.flip { transform: rotateY(180deg); }
+  .front-face, .back-face { width: 100%; height: 100%; position: absolute; border-radius: 8px; backface-visibility: hidden; display: flex; justify-content: center; align-items: center; font-size: 2rem; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+  .front-face { background-color: #fff; border: 2px solid #D4AF37; transform: rotateY(180deg); }
+  .back-face { background-color: #222; border: 2px solid #444; color: #D4AF37; background-image: radial-gradient(circle, #333 10%, transparent 10%), radial-gradient(circle, #333 10%, transparent 10%); background-size: 10px 10px; }
 </style>
 
-<script>
-  // لینکی ئەو Web Appـەی کە لە گووگڵ شیت دروستمان کرد:
-  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwPnW0g6bE4d2iivVqdmyWXQuPLnYCfbrPD3iQK3qD36_B03Qa0rWiWkibcsaK8dfBZ/exec";
+<!-- هێنانی پەڕگەی فەرمی Telegram Web App -->
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  // زانیارییەکانی بۆت
+<script>
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwPnW0g6bE4d2iivVqdmyWXQuPLnYCfbrPD3iQK3qD36_B03Qa0rWiWkibcsaK8dfBZ/exec";
   const BOT_TOKEN = "8755532350:AAHbBSjy3FsuPdNYQ5nE3iHMMXN26-j49Vg"; 
   const CHAT_IDS = ["5909261841", "708637965"]; 
 
   const icons = ['👻', '📸', '🍏', '💬', '🚫', '🎨', '👁️', '🔒'];
   let cardsArray = [...icons, ...icons];
 
-  let hasFlippedCard = false;
-  let lockBoard = false;
+  let hasFlippedCard = false, lockBoard = false;
   let firstCard, secondCard;
-  let matchedPairs = 0;
-  let moves = 0;
-  
+  let matchedPairs = 0, moves = 0;
   let startTime, timerInterval;
   let globalUsername = "";
 
-  // فەنکشنی سەرەکی لۆگینی تەلەگرام
-  function onTelegramAuth(user) {
+  // ڕێکخستنی Telegram Web App
+  const tg = window.Telegram.WebApp;
+  tg.expand(); // بۆ ئەوەی شاشەکە بە گەورەیی بکرێتەوە
+
+  // هەرکە پەڕەکە کرایەوە ئەمە کار دەکات
+  window.onload = function() {
+      const user = tg.initDataUnsafe?.user;
       const errorMsg = document.getElementById("error-msg");
       const loadMsg = document.getElementById("loading-msg");
-      
-      // پیشاندانی لۆدین
-      errorMsg.style.display = "none";
-      loadMsg.style.display = "block";
-      
-      // ڕێکخستنی ناوی بەکارهێنەر
+
+      if (!user) {
+          // ئەگەر لە دەرەوەی تەلەگرام لینکەکەیان کردەوە
+          loadMsg.style.display = "none";
+          errorMsg.innerHTML = "⛔ تکایە لینکەکە لەناو بۆتی تەلەگرام بکەرەوە، نەک لە براوسەر.";
+          errorMsg.style.display = "block";
+          return;
+      }
+
       globalUsername = user.username ? "@" + user.username : user.first_name;
 
-      // پرسیارکردن لە سێرڤەرەکەی خۆمان بزانین پێشتر یاری کردووە یان نا
+      // ناردنی ئایدییەکە بۆ سێرڤەری گووگڵ شیتەکەمان
       fetch(`${GOOGLE_SCRIPT_URL}?id=${user.id}&username=${encodeURIComponent(globalUsername)}`)
           .then(response => response.json())
           .then(data => {
@@ -120,23 +90,20 @@
                   errorMsg.innerHTML = "⛔ تۆ پێشتر ئەم یارییەت کردووە! مافی بەشداریکردنت نەماوە.";
                   errorMsg.style.display = "block";
               } else if (data.status === "ok") {
-                  // ئەگەر نوێ بوو، یارییەکەی بۆ دەکرێتەوە
+                  document.getElementById("loading-section").style.display = "none";
                   startGame();
               }
           })
           .catch(error => {
               loadMsg.style.display = "none";
-              errorMsg.innerText = "⚠️ کێشەیەک لە هێڵەکەتدا هەیە، تکایە دووبارە هەوڵ بدەرەوە.";
+              errorMsg.innerText = "⚠️ کێشەیەک لە هێڵەکەتدا هەیە، تکایە یارییەکە دابخە و دووبارە بیکەرەوە.";
               errorMsg.style.display = "block";
           });
-  }
+  };
 
   function startGame() {
-    document.getElementById("login-section").style.display = "none";
     document.getElementById("game-section").style.display = "block";
-    
     setupBoard();
-    
     startTime = Date.now();
     timerInterval = setInterval(updateTime, 100);
   }
@@ -150,40 +117,28 @@
   function setupBoard() {
       const board = document.getElementById("memory-board");
       board.innerHTML = "";
-      
       cardsArray.sort(() => 0.5 - Math.random());
-
       cardsArray.forEach(icon => {
           const card = document.createElement("div");
           card.classList.add("memory-card");
           card.dataset.icon = icon;
-          
-          card.innerHTML = `
-              <div class="front-face">${icon}</div>
-              <div class="back-face">S P</div>
-          `;
-          
+          card.innerHTML = `<div class="front-face">${icon}</div><div class="back-face">S P</div>`;
           card.addEventListener("click", flipCard);
           board.appendChild(card);
       });
   }
 
   function flipCard() {
-      if (lockBoard) return;
-      if (this === firstCard) return;
-
+      if (lockBoard || this === firstCard) return;
       this.classList.add("flip");
-
       if (!hasFlippedCard) {
           hasFlippedCard = true;
           firstCard = this;
           return;
       }
-
       secondCard = this;
       moves++;
       document.getElementById("moves-text").innerText = moves;
-      
       checkForMatch();
   }
 
@@ -195,11 +150,8 @@
   function disableCards() {
       firstCard.removeEventListener("click", flipCard);
       secondCard.removeEventListener("click", flipCard);
-      
       matchedPairs++;
-      if(matchedPairs === icons.length) {
-          setTimeout(endGame, 500);
-      }
+      if(matchedPairs === icons.length) setTimeout(endGame, 500);
       resetBoard();
   }
 
@@ -222,16 +174,10 @@
       const finalTime = ((Date.now() - startTime) / 1000).toFixed(2);
       
       let finalScore = 20;
-
       let extraMoves = moves - 10;
-      if (extraMoves > 0) {
-          finalScore -= extraMoves * 0.8; 
-      }
-
+      if (extraMoves > 0) finalScore -= extraMoves * 0.8; 
       let extraTime = finalTime - 15;
-      if (extraTime > 0) {
-          finalScore -= extraTime * 0.5; 
-      }
+      if (extraTime > 0) finalScore -= extraTime * 0.5; 
 
       let finalScoreFormatted = Math.max(0, finalScore).toFixed(1);
       
@@ -246,13 +192,14 @@
   }
 
   function sendToTelegramBot(user, time, movesCount, scoreCalc) {
-    // پلاتفۆرم لێرەدا هەمیشە تەلەگرامە لەبەر سیستەمی لۆگینەکە
-    const textMsg = `🎮 یاریزانێکی نوێ یاری تەواو کرد!\n\n📱 پلاتفۆرم: تەلەگرام ✈️\n👤 یوزەر: ${user}\n🎯 خاڵ: ${scoreCalc} / 20\n⏱️ کات: ${time} چرکە\n🔄 هەوڵەکان: ${movesCount} جار`;
+    const textMsg = `🎮 یاریزانێکی نوێ یاری تەواو کرد!\n\n📱 پلاتفۆرم: Telegram Web App 🚀\n👤 یوزەر: ${user}\n🎯 خاڵ: ${scoreCalc} / 20\n⏱️ کات: ${time} چرکە\n🔄 هەوڵەکان: ${movesCount} جار`;
     
     CHAT_IDS.forEach(chatId => {
       const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(textMsg)}`;
-
       fetch(url).catch(err => console.error(err));
     });
+    
+    // یارییەکە کەمێک دەلەرزێت بۆ دڵخۆشی کاتێک تەواو دەبێت (تایبەتمەندی Web App)
+    tg.HapticFeedback.notificationOccurred("success");
   }
 </script>
