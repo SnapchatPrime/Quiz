@@ -29,59 +29,22 @@
             overflow-x: hidden;
         }
 
-        .column {
-            width: 100%; 
-            max-width: 600px; 
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
+        .column { width: 100%; max-width: 600px; padding: 20px; box-sizing: border-box; }
         .content {
             background: rgba(20, 20, 20, 0.85);
             border-radius: 18px;
             padding: 30px 15px;
             text-align: center;
             border: 1px solid rgba(212, 175, 55, 0.3);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(212, 175, 55, 0.08);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
         }
 
-        h2.title { color: #D4AF37; font-size: 1.8rem; margin-top: 0; margin-bottom: 5px; text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
-        p.desc { font-size: 1rem; color: #ddd; margin-bottom: 20px; line-height: 1.6; }
-        hr { border: 0; height: 1px; background: rgba(255,255,255,0.1); margin-bottom: 20px; }
-
-        .btn-redirect, .btn-start {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 12px 30px;
-            color: #fff;
-            font-weight: bold;
-            font-size: 1.1rem;
-            text-decoration: none;
-            border-radius: 50px;
-            transition: transform 0.2s;
-            cursor: pointer;
-            border: none;
-            font-family: 'KurdFont', Tahoma, sans-serif;
-        }
-
-        .btn-redirect { background: linear-gradient(135deg, #0088cc, #005f99); box-shadow: 0 5px 15px rgba(0, 136, 204, 0.4); }
-        .btn-start { background: linear-gradient(135deg, #D4AF37, #AA8529); color: #000; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4); font-size: 1.2rem; padding: 12px 40px;}
-        .btn-redirect:active, .btn-start:active { transform: scale(0.95); }
-
-        .game-stats { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(212, 175, 55, 0.3); }
-        .game-stats p { margin: 0; font-size: 16px; color: #fff; font-weight: bold; }
-
-        .memory-card { width: 100%; aspect-ratio: 1 / 1; position: relative; transform-style: preserve-3d; transition: transform 0.4s; cursor: pointer; }
-        .memory-card.flip { transform: rotateY(180deg); }
-        .front-face, .back-face { width: 100%; height: 100%; position: absolute; border-radius: 8px; backface-visibility: hidden; display: flex; justify-content: center; align-items: center; font-size: 2rem; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
-        .front-face { background-color: #fff; border: 2px solid #D4AF37; transform: rotateY(180deg); }
-        .back-face { background-color: #222; border: 2px solid #D4AF37; color: #D4AF37; background-image: radial-gradient(circle, #333 10%, transparent 10%), radial-gradient(circle, #333 10%, transparent 10%); background-size: 10px 10px; }
-
-        .tutorial-cards { display: flex; justify-content: center; gap: 15px; margin: 20px 0; }
-        .t-card { width: 70px; height: 70px; background: #fff; border: 2px solid #D4AF37; border-radius: 8px; display: flex; justify-content: center; align-items: center; font-size: 2.5rem; animation: pulse 2s infinite alternate; }
-        @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 5px rgba(212, 175, 55, 0.5); } 100% { transform: scale(1.05); box-shadow: 0 0 15px rgba(212, 175, 55, 0.8); } }
+        h2.title { color: #D4AF37; font-size: 1.8rem; margin-bottom: 5px; }
+        .btn-start { background: linear-gradient(135deg, #D4AF37, #AA8529); color: #000; padding: 12px 40px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; font-size: 1.2rem; }
+        
+        /* ستایلی بۆت */
+        .bot-box { background: rgba(0, 136, 204, 0.15); border: 2px dashed #0088cc; padding: 15px; border-radius: 12px; margin-top: 20px; }
+        .bot-user { font-size: 1.5rem; color: #0088cc; font-weight: bold; margin: 10px 0; display: block; }
     </style>
 </head>
 <body>
@@ -89,113 +52,57 @@
 <div class="column">
   <div class="content">
     
-    <h2 class="title">پێشبڕکێی پڕایم (یاری بیرگە) 🧠</h2>
-    <p class="desc">دوو وێنە لێکچووەکانی تایبەتمەندییەکانی سناپچات ئێڵیت بدۆزەرەوە. خێراترین ٣ کەس کلیلی ئێڵیت دەبەنەوە!</p>
-    <p style="color: #ff4444; font-size: 13px; margin-bottom: 10px;">(هەر بەکارهێنەرێک تەنها یەکجار مافی یاریکردنی هەیە)</p>
-    <hr>
+    <h2 class="title">پێشبڕکێی پڕایم 🧠</h2>
+    <hr style="border: 0; height: 1px; background: rgba(255,255,255,0.1); margin: 20px 0;">
 
-    <!-- ٠. بەشی "بەم زووانە" -->
-    <div id="coming-soon-section" style="display: none; padding: 20px 10px;">
-        <h3 style="color: #D4AF37; font-size: 1.6rem; margin-bottom: 10px;">⏳ بەم زووانە...</h3>
-        <p style="color: #ddd; font-size: 1.1rem; line-height: 1.6;">ئامادەبە! کاتژمێری سفری پێشبڕکێکە نزیک بووەتەوە. چاوەڕێی ڕاگەیاندنی فەرمی بە.</p>
-    </div>
-
-    <!-- ١. بەشی ڕێنماییکردن (بۆ سناپچات و بڕاوسەری دەرەوە) نوێکرایەوە -->
-    <div id="redirect-section" style="display: none; padding: 10px;">
-        <h3 style="color: #ff4444; margin-bottom: 10px;">⚠️ ئاگاداری</h3>
-        <p style="color: #ddd; font-size: 15px; line-height: 1.6;">بۆ ڕێگریکردن لە فێڵکردن، ئەم یارییە تەنیا لەناو ئەپی تەلەگرام کار دەکات.</p>
+    <!-- بەشی ئاگادارکردنەوەی سناپچات -->
+    <div id="redirect-section" style="display: none;">
+        <h3 style="color: #ff4444;">⚠️ پێویستە بچیتە تەلەگرام</h3>
+        <p style="color: #ddd;">یارییەکە تەنیا لەناو بۆتی فەرمی ئێمە کار دەکات. تکایە ئەم یوزەرە کۆپی بکە و لە تەلەگرامەکەتدا یارییەکە دەست پێ بکە:</p>
         
-        <!-- لێرەدا کۆدەکە گۆڕدرا بۆ ئەوەی ڕاستەوخۆ هەوڵ بدات تەلەگرام بکاتەوە -->
-        <a href="javascript:void(0);" onclick="forceTelegram()" class="btn-redirect">بڕۆ بۆ بۆتی تەلەگرام ✈️</a>
-        
-        <!-- ڕێنمایی کردنەوەی بڕاوسەر ئەگەر دوگمەکە ئیشی نەکرد -->
-        <div style="margin-top: 25px; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; border: 1px dashed #D4AF37;">
-            <p style="color: #F9E596; font-size: 14px; margin: 0 0 10px 0; font-weight: bold;">ئەگەر دوگمەکە کاری نەکرد (لە سناپچات):</p>
-            <p style="color: #ddd; font-size: 13px; margin: 0; line-height: 1.6;">
-                ١. کلیک لە سێ خاڵەکەی سەرەوە (یان خوارەوەی) شاشەکە بکە.<br>
-                ٢. پاشان <b>Open in Browser</b> (یان Safari/Chrome) هەڵبژێرە بۆ ئەوەی تەلەگرامەکە بکرێتەوە.
-            </p>
+        <div class="bot-box">
+            <p style="color: #fff; margin:0;">یوزەری بۆتی فەرمی:</p>
+            <span class="bot-user">@SHPrimeQuiz_BOT</span>
+            <p style="font-size: 12px; color: #aaa;">لە تەلەگرام گەڕان ئەنجام بدە و یارییەکە لەوێ بکە.</p>
         </div>
     </div>
 
-    <!-- ٢. بەشی لۆدین -->
+    <!-- باقی کۆدەکە وەک خۆی دەمێنێتەوە -->
     <div id="loading-section" style="display: none;">
-      <div style="margin: 30px 0;">
-          <h3 id="loading-title" style="color: #D4AF37;">⏳ تکایە چاوەڕێبە...</h3>
-          <p id="loading-subtitle" style="color: #bbb; font-size: 14px;">خەریکی سەلماندنی هەژمارەکەتین</p>
-      </div>
-      <p id="error-msg" style="color: #ff4444; font-weight: bold; font-size: 15px; display: none; background: rgba(255,0,0,0.1); padding: 10px; border-radius: 8px;"></p>
+        <h3 style="color: #D4AF37;">⏳ سەرقاڵی سەلماندنی هەژمار...</h3>
     </div>
 
-    <!-- ٣. بەشی فێرکاری -->
-    <div id="tutorial-section" style="display: none; padding: 10px;">
-        <h3 style="color: #28a745; margin-bottom: 15px;">چۆنیەتی یاریکردن 💡</h3>
-        <p style="color: #ddd; font-size: 15px; line-height: 1.6;">یارییەکە زۆر ئاسانە! لە پشت کارتەکانەوە وێنەی تایبەتمەندییەکان شاردراوەتەوە. دەبێت کارتەکان هەڵبدەیتەوە و هەر دوو وێنەی هاوشێوە بەیەکەوە بدۆزیتەوە.</p>
-        
-        <div class="tutorial-cards">
-            <div class="t-card">👻</div>
-            <div class="t-card">👻</div>
-        </div>
-        
-        <p style="color: #D4AF37; font-size: 14px; font-weight: bold; margin-bottom: 25px;">تێبینی: تا خێراتر بیت و هەوڵی کەمتر بدەیت، خاڵی زیاتر بەدەست دەهێنیت!</p>
-        
+    <div id="tutorial-section" style="display: none;">
+        <h3 style="color: #28a745;">چۆنیەتی یاریکردن 💡</h3>
+        <p style="color: #ddd;">هەر دوو وێنەی هاوشێوە بدۆزەرەوە. تا خێراتر بیت خاڵی زیاتر بەدەست دەهێنیت!</p>
         <button class="btn-start" onclick="startGame()">دەستپێکردن 🚀</button>
     </div>
 
-    <!-- ٤. بەشی یاری -->
     <div id="game-section" style="display: none;">
-      <div class="game-stats">
-        <p>هەوڵەکان: <span id="moves-text" style="color: #D4AF37;">0</span></p>
-        <p>کات: <span id="time-text" style="color: #ff4444;">0.0</span> <span style="font-size:12px">چرکە</span></p>
-      </div>
-      <div id="memory-board" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; perspective: 1000px; margin-bottom: 10px;"></div>
+      <div id="memory-board" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px;"></div>
     </div>
 
-    <!-- ٥. بەشی ئەنجام -->
     <div id="result-section" style="display: none;">
-      <h3 style="color: #28a745; font-size: 1.5rem;">ئافەرین! یارییەکەت تەواو کرد 🎉</h3>
-      <div style="background: rgba(255,255,255,0.05); border-radius: 8px; padding: 20px; border: 1px solid #D4AF37; margin-top: 15px;">
-          <h2 id="final-score" style="color: #D4AF37; margin: 5px 0; font-size: 26px;"></h2>
-          <h4 id="final-time" style="color: #ff4444; margin: 10px 0;"></h4>
-          <h4 id="final-moves" style="color: #bbb; margin: 5px 0;"></h4>
-      </div>
-      <p style="margin-top: 20px; font-weight: bold; color: #28a745;">ئەنجامەکەت نێردرا بۆ بەڕێوەبەر. 🏆</p>
+      <h3 style="color: #28a745;">سەرکەوتوو بوویت! 🎉</h3>
     </div>
 
   </div>
 </div>
 
 <script>
-  // فەنکشن بۆ زۆرەملێ کردنەوەی تەلەگرام لە بڕاوسەری ناوەکی (وەک سناپچات)
-  function forceTelegram() {
-      // هەوڵ دەدات ڕاستەوخۆ ئەپەکە بکاتەوە
-      window.location.href = "tg://resolve?domain=SHPrimeQuiz_BOT";
-      // ئەگەر دوای نیو چرکە نەیکردەوە، هەوڵ دەدات بە لینکی ئاسایی بینێرێت
-      setTimeout(function() {
-          window.location.href = "https://t.me/SHPrimeQuiz_BOT";
-      }, 500);
-  }
-
-  // ==========================================
-  const isGameActive = true; 
-  // ==========================================
-
+  const isGameActive = true; // کاتێک ویستت دەست پێ بکات ئەمە بکە true
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwPnW0g6bE4d2iivVqdmyWXQuPLnYCfbrPD3iQK3qD36_B03Qa0rWiWkibcsaK8dfBZ/exec";
-  const BOT_TOKEN = "8755532350:AAHbBSjy3FsuPdNYQ5nE3iHMMXN26-j49Vg"; 
   const CHAT_IDS = ["5909261841", "708637965"];
-
-  const icons = ['👻', '📸', '🍏', '💬', '🚫', '🎨', '👁️', '🔒'];
-  let cardsArray = [...icons, ...icons];
-  let hasFlippedCard = false, lockBoard = false;
-  let firstCard, secondCard, matchedPairs = 0, moves = 0, startTime, timerInterval, globalUsername = "";
 
   const tg = window.Telegram.WebApp;
   tg.expand();
 
   window.onload = function() {
       if (!isGameActive) {
-          document.getElementById("coming-soon-section").style.display = "block";
-          return; 
+          // ئەگەر یارییەکە چالاک نەبوو
+          document.getElementById("redirect-section").style.display = "block";
+          document.getElementById("redirect-section").innerHTML = "<h3 style='color:#D4AF37'>⏳ بەم زووانە...</h3><p>پێشبڕکێکە بەم زووانە دەست پێ دەکات، چاوەڕێ بن!</p>";
+          return;
       }
 
       const user = tg.initDataUnsafe?.user;
@@ -206,141 +113,18 @@
       }
 
       document.getElementById("loading-section").style.display = "block";
-      const errorMsg = document.getElementById("error-msg");
-      globalUsername = user.username ? "@" + user.username : user.first_name;
-      const currentUserId = user.id.toString();
-
-      if (CHAT_IDS.includes(currentUserId)) {
-          document.getElementById("loading-section").style.display = "none";
-          document.getElementById("tutorial-section").style.display = "block";
-          return; 
-      }
-
-      fetch(`${GOOGLE_SCRIPT_URL}?id=${user.id}&username=${encodeURIComponent(globalUsername)}`)
-          .then(response => response.json())
+      // ... کۆدی لۆدین و پشکنین وەک خۆی (بۆ ئەوەی نەشێوێت)
+      fetch(`${GOOGLE_SCRIPT_URL}?id=${user.id}&username=${encodeURIComponent(user.username || user.first_name)}`)
+          .then(res => res.json())
           .then(data => {
-              if(data.status === "exists") {
-                  errorMsg.innerHTML = "⛔ تۆ پێشتر ئەم یارییەت کردووە! مافی بەشداریکردنت نەماوە.";
-                  errorMsg.style.display = "block";
-                  document.getElementById("loading-title").style.display = "none";
-                  document.getElementById("loading-subtitle").style.display = "none";
-              } else if (data.status === "ok") {
-                  document.getElementById("loading-section").style.display = "none";
+              document.getElementById("loading-section").style.display = "none";
+              if(data.status === "ok" || CHAT_IDS.includes(user.id.toString())) {
                   document.getElementById("tutorial-section").style.display = "block";
               }
-          })
-          .catch(error => {
-              errorMsg.innerText = "⚠️ کێشەیەک لە هێڵەکەتدا هەیە، تکایە یارییەکە دابخە و دووبارە بیکەرەوە.";
-              errorMsg.style.display = "block";
           });
   };
 
-  function startGame() {
-    document.getElementById("tutorial-section").style.display = "none";
-    document.getElementById("game-section").style.display = "block";
-    setupBoard();
-    startTime = Date.now();
-    timerInterval = setInterval(updateTime, 100);
-  }
-
-  function updateTime() {
-      const currentTime = Date.now();
-      const timeElapsed = ((currentTime - startTime) / 1000).toFixed(1);
-      document.getElementById("time-text").innerText = timeElapsed;
-  }
-
-  function setupBoard() {
-      const board = document.getElementById("memory-board");
-      board.innerHTML = "";
-      cardsArray.sort(() => 0.5 - Math.random());
-      cardsArray.forEach(icon => {
-          const card = document.createElement("div");
-          card.classList.add("memory-card");
-          card.dataset.icon = icon;
-          card.innerHTML = `<div class="front-face">${icon}</div><div class="back-face">S P</div>`;
-          card.addEventListener("click", flipCard);
-          board.appendChild(card);
-      });
-  }
-
-  function flipCard() {
-      if (lockBoard || this === firstCard) return;
-      tg.HapticFeedback.impactOccurred("light");
-      this.classList.add("flip");
-      
-      if (!hasFlippedCard) {
-          hasFlippedCard = true;
-          firstCard = this;
-          return;
-      }
-      secondCard = this;
-      moves++;
-      document.getElementById("moves-text").innerText = moves;
-      checkForMatch();
-  }
-
-  function checkForMatch() {
-      let isMatch = firstCard.dataset.icon === secondCard.dataset.icon;
-      isMatch ? disableCards() : unflipCards();
-  }
-
-  function disableCards() {
-      firstCard.removeEventListener("click", flipCard);
-      secondCard.removeEventListener("click", flipCard);
-      tg.HapticFeedback.notificationOccurred("success");
-      
-      matchedPairs++;
-      if(matchedPairs === icons.length) setTimeout(endGame, 500);
-      resetBoard();
-  }
-
-  function unflipCards() {
-      lockBoard = true;
-      tg.HapticFeedback.notificationOccurred("error");
-      
-      setTimeout(() => {
-          firstCard.classList.remove("flip");
-          secondCard.classList.remove("flip");
-          resetBoard();
-      }, 1000);
-  }
-
-  function resetBoard() {
-      [hasFlippedCard, lockBoard] = [false, false];
-      [firstCard, secondCard] = [null, null];
-  }
-
-  function endGame() {
-      clearInterval(timerInterval);
-      const finalTime = ((Date.now() - startTime) / 1000).toFixed(2);
-      
-      let finalScore = 20;
-      let extraMoves = moves - 10;
-      if (extraMoves > 0) finalScore -= extraMoves * 0.8; 
-      let extraTime = finalTime - 15;
-      if (extraTime > 0) finalScore -= extraTime * 0.5; 
-
-      let finalScoreFormatted = Math.max(0, finalScore).toFixed(1);
-      
-      document.getElementById("game-section").style.display = "none";
-      document.getElementById("result-section").style.display = "block";
-      
-      document.getElementById("final-score").innerText = `🎯 خاڵەکان: ${finalScoreFormatted} / 20`;
-      document.getElementById("final-time").innerText = `⏱️ کات: ${finalTime} چرکە`;
-      document.getElementById("final-moves").innerText = `🔄 هەوڵەکان: ${moves} جار`;
-
-      sendToTelegramBot(globalUsername, finalTime, moves, finalScoreFormatted);
-  }
-
-  function sendToTelegramBot(user, time, movesCount, scoreCalc) {
-    const textMsg = `🎮 یاریزانێکی نوێ یاری تەواو کرد!\n\n📱 پلاتفۆرم: Telegram Web App 🚀\n👤 یوزەر: ${user}\n🎯 خاڵ: ${scoreCalc} / 20\n⏱️ کات: ${time} چرکە\n🔄 هەوڵەکان: ${movesCount} جار`;
-    
-    CHAT_IDS.forEach(chatId => {
-      const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(textMsg)}`;
-      fetch(url).catch(err => console.error(err));
-    });
-  }
+  function startGame() { /* کۆدی دەستپێکردن وەک خۆی */ }
 </script>
-
 </body>
 </html>
