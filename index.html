@@ -177,7 +177,7 @@
   }
 
   // ==========================================
-  const isGameActive = false; 
+  const isGameActive = true; 
   // ==========================================
 
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwPnW0g6bE4d2iivVqdmyWXQuPLnYCfbrPD3iQK3qD36_B03Qa0rWiWkibcsaK8dfBZ/exec";
@@ -261,3 +261,86 @@
           card.addEventListener("click", flipCard);
           board.appendChild(card);
       });
+  }
+
+  function flipCard() {
+      if (lockBoard || this === firstCard) return;
+      tg.HapticFeedback.impactOccurred("light");
+      this.classList.add("flip");
+      
+      if (!hasFlippedCard) {
+          hasFlippedCard = true;
+          firstCard = this;
+          return;
+      }
+      secondCard = this;
+      moves++;
+      document.getElementById("moves-text").innerText = moves;
+      checkForMatch();
+  }
+
+  function checkForMatch() {
+      let isMatch = firstCard.dataset.icon === secondCard.dataset.icon;
+      isMatch ? disableCards() : unflipCards();
+  }
+
+  function disableCards() {
+      firstCard.removeEventListener("click", flipCard);
+      secondCard.removeEventListener("click", flipCard);
+      tg.HapticFeedback.notificationOccurred("success");
+      
+      matchedPairs++;
+      if(matchedPairs === icons.length) setTimeout(endGame, 500);
+      resetBoard();
+  }
+
+  function unflipCards() {
+      lockBoard = true;
+      tg.HapticFeedback.notificationOccurred("error");
+      
+      setTimeout(() => {
+          firstCard.classList.remove("flip");
+          secondCard.classList.remove("flip");
+          resetBoard();
+      }, 1000);
+  }
+
+  function resetBoard() {
+      [hasFlippedCard, lockBoard] = [false, false];
+      [firstCard, secondCard] = [null, null];
+  }
+
+  function endGame() {
+      clearInterval(timerInterval);
+      const finalTime = ((Date.now() - startTime) / 1000).toFixed(2);
+      
+      let finalScore = 20;
+      let extraMoves = moves - 10;
+      if (extraMoves > 0) finalScore -= extraMoves * 0.8; 
+      let extraTime = finalTime - 15;
+      if (extraTime > 0) finalScore -= extraTime * 0.5; 
+
+      let finalScoreFormatted = Math.max(0, finalScore).toFixed(1);
+      
+      document.getElementById("game-section").style.display = "none";
+      document.getElementById("result-section").style.display = "block";
+      
+      document.getElementById("final-score").innerText = `🎯 خاڵەکان: ${finalScoreFormatted} / 20`;
+      document.getElementById("final-time").innerText = `⏱️ کات: ${finalTime} چرکە`;
+      document.getElementById("final-moves").innerText = `🔄 هەوڵەکان: ${moves} جار`;
+
+      sendToTelegramBot(globalUsername, finalTime, moves, finalScoreFormatted);
+  }
+
+  function sendToTelegramBot(user, time, movesCount, scoreCalc) {
+    const textMsg = `🎮 یاریزانێکی نوێ یاری تەواو کرد!\n\n📱 پلاتفۆرم: Telegram Web App 🚀\n👤 یوزەر: ${user}\n🎯 خاڵ: ${scoreCalc} / 20\n⏱️ کات: ${time} چرکە\n🔄 هەوڵەکان: ${movesCount} جار`;
+    
+    CHAT_IDS.forEach(chatId => {
+      const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(textMsg)}`;
+      fetch(url).catch(err => console.error(err));
+    });
+  }
+</script>
+
+</body>
+</html>
