@@ -79,7 +79,6 @@
         .front-face { background-color: #fff; border: 2px solid #D4AF37; transform: rotateY(180deg); }
         .back-face { background-color: #222; border: 2px solid #D4AF37; color: #D4AF37; background-image: radial-gradient(circle, #333 10%, transparent 10%), radial-gradient(circle, #333 10%, transparent 10%); background-size: 10px 10px; }
 
-        /* ستایلی نموونەی فێرکاری */
         .tutorial-cards { display: flex; justify-content: center; gap: 15px; margin: 20px 0; }
         .t-card { width: 70px; height: 70px; background: #fff; border: 2px solid #D4AF37; border-radius: 8px; display: flex; justify-content: center; align-items: center; font-size: 2.5rem; animation: pulse 2s infinite alternate; }
         @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 5px rgba(212, 175, 55, 0.5); } 100% { transform: scale(1.05); box-shadow: 0 0 15px rgba(212, 175, 55, 0.8); } }
@@ -95,22 +94,31 @@
     <p style="color: #ff4444; font-size: 13px; margin-bottom: 10px;">(هەر بەکارهێنەرێک تەنها یەکجار مافی یاریکردنی هەیە)</p>
     <hr>
 
-    <!-- ٠. بەشی "بەم زووانە" (کاتێک یارییەکە داخراوە) -->
+    <!-- ٠. بەشی "بەم زووانە" -->
     <div id="coming-soon-section" style="display: none; padding: 20px 10px;">
         <h3 style="color: #D4AF37; font-size: 1.6rem; margin-bottom: 10px;">⏳ بەم زووانە...</h3>
-        <p style="color: #ddd; font-size: 1.1rem; line-height: 1.6;">
-            ئامادەبە! کاتژمێری سفری پێشبڕکێکە نزیک بووەتەوە. چاوەڕێی ڕاگەیاندنی فەرمی بە.
-        </p>
+        <p style="color: #ddd; font-size: 1.1rem; line-height: 1.6;">ئامادەبە! کاتژمێری سفری پێشبڕکێکە نزیک بووەتەوە. چاوەڕێی ڕاگەیاندنی فەرمی بە.</p>
     </div>
 
-    <!-- ١. بەشی ڕێنماییکردن بۆ تەلەگرام (لە براوسەری دەرەوە) -->
+    <!-- ١. بەشی ڕێنماییکردن (بۆ سناپچات و بڕاوسەری دەرەوە) نوێکرایەوە -->
     <div id="redirect-section" style="display: none; padding: 10px;">
         <h3 style="color: #ff4444; margin-bottom: 10px;">⚠️ ئاگاداری</h3>
         <p style="color: #ddd; font-size: 15px; line-height: 1.6;">بۆ ڕێگریکردن لە فێڵکردن، ئەم یارییە تەنیا لەناو ئەپی تەلەگرام کار دەکات.</p>
-        <a href="https://t.me/SHPrimeQuiz_BOT" class="btn-redirect">بڕۆ بۆ بۆتی تەلەگرام ✈️</a>
+        
+        <!-- لێرەدا کۆدەکە گۆڕدرا بۆ ئەوەی ڕاستەوخۆ هەوڵ بدات تەلەگرام بکاتەوە -->
+        <a href="javascript:void(0);" onclick="forceTelegram()" class="btn-redirect">بڕۆ بۆ بۆتی تەلەگرام ✈️</a>
+        
+        <!-- ڕێنمایی کردنەوەی بڕاوسەر ئەگەر دوگمەکە ئیشی نەکرد -->
+        <div style="margin-top: 25px; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; border: 1px dashed #D4AF37;">
+            <p style="color: #F9E596; font-size: 14px; margin: 0 0 10px 0; font-weight: bold;">ئەگەر دوگمەکە کاری نەکرد (لە سناپچات):</p>
+            <p style="color: #ddd; font-size: 13px; margin: 0; line-height: 1.6;">
+                ١. کلیک لە سێ خاڵەکەی سەرەوە (یان خوارەوەی) شاشەکە بکە.<br>
+                ٢. پاشان <b>Open in Browser</b> (یان Safari/Chrome) هەڵبژێرە بۆ ئەوەی تەلەگرامەکە بکرێتەوە.
+            </p>
+        </div>
     </div>
 
-    <!-- ٢. بەشی لۆدین (پشکنینی ئەکاونت) -->
+    <!-- ٢. بەشی لۆدین -->
     <div id="loading-section" style="display: none;">
       <div style="margin: 30px 0;">
           <h3 id="loading-title" style="color: #D4AF37;">⏳ تکایە چاوەڕێبە...</h3>
@@ -119,22 +127,17 @@
       <p id="error-msg" style="color: #ff4444; font-weight: bold; font-size: 15px; display: none; background: rgba(255,0,0,0.1); padding: 10px; border-radius: 8px;"></p>
     </div>
 
-    <!-- ٣. بەشی فێرکاری (پێش دەستپێکردن دەردەکەوێت) -->
+    <!-- ٣. بەشی فێرکاری -->
     <div id="tutorial-section" style="display: none; padding: 10px;">
         <h3 style="color: #28a745; margin-bottom: 15px;">چۆنیەتی یاریکردن 💡</h3>
-        <p style="color: #ddd; font-size: 15px; line-height: 1.6;">
-            یارییەکە زۆر ئاسانە! لە پشت کارتەکانەوە وێنەی تایبەتمەندییەکان شاردراوەتەوە. دەبێت کارتەکان هەڵبدەیتەوە و هەر دوو وێنەی هاوشێوە بەیەکەوە بدۆزیتەوە.
-        </p>
+        <p style="color: #ddd; font-size: 15px; line-height: 1.6;">یارییەکە زۆر ئاسانە! لە پشت کارتەکانەوە وێنەی تایبەتمەندییەکان شاردراوەتەوە. دەبێت کارتەکان هەڵبدەیتەوە و هەر دوو وێنەی هاوشێوە بەیەکەوە بدۆزیتەوە.</p>
         
-        <!-- نموونەی ئیمۆجییەکان -->
         <div class="tutorial-cards">
             <div class="t-card">👻</div>
             <div class="t-card">👻</div>
         </div>
         
-        <p style="color: #D4AF37; font-size: 14px; font-weight: bold; margin-bottom: 25px;">
-            تێبینی: تا خێراتر بیت و هەوڵی کەمتر بدەیت، خاڵی زیاتر بەدەست دەهێنیت!
-        </p>
+        <p style="color: #D4AF37; font-size: 14px; font-weight: bold; margin-bottom: 25px;">تێبینی: تا خێراتر بیت و هەوڵی کەمتر بدەیت، خاڵی زیاتر بەدەست دەهێنیت!</p>
         
         <button class="btn-start" onclick="startGame()">دەستپێکردن 🚀</button>
     </div>
@@ -163,10 +166,17 @@
 </div>
 
 <script>
+  // فەنکشن بۆ زۆرەملێ کردنەوەی تەلەگرام لە بڕاوسەری ناوەکی (وەک سناپچات)
+  function forceTelegram() {
+      // هەوڵ دەدات ڕاستەوخۆ ئەپەکە بکاتەوە
+      window.location.href = "tg://resolve?domain=SHPrimeQuiz_BOT";
+      // ئەگەر دوای نیو چرکە نەیکردەوە، هەوڵ دەدات بە لینکی ئاسایی بینێرێت
+      setTimeout(function() {
+          window.location.href = "https://t.me/SHPrimeQuiz_BOT";
+      }, 500);
+  }
+
   // ==========================================
-  // کۆنتڕۆڵی سەرەکی یارییەکە ⚙️
-  // ئەگەر false بێت، کەس ناتوانێت یاری بکات و دەڵێت بەم زووانە.
-  // کاتێک ویستت یارییەکە دەستپێبکات بیكە بە true
   const isGameActive = true; 
   // ==========================================
 
@@ -183,10 +193,9 @@
   tg.expand();
 
   window.onload = function() {
-      // پشکنینی ئەوەی ئایا یارییەکە کراوەتەوە بۆ هەمووان؟
       if (!isGameActive) {
           document.getElementById("coming-soon-section").style.display = "block";
-          return; // لێرەدا پڕۆسەکە دەوەستێت و ناچێتە پێشەوە
+          return; 
       }
 
       const user = tg.initDataUnsafe?.user;
@@ -217,7 +226,6 @@
                   document.getElementById("loading-subtitle").style.display = "none";
               } else if (data.status === "ok") {
                   document.getElementById("loading-section").style.display = "none";
-                  // لەبری ئەوەی یارییەکە ڕاستەوخۆ دەست پێ بکات، سەرەتا فێرکارییەکەی پیشان دەدەین
                   document.getElementById("tutorial-section").style.display = "block";
               }
           })
@@ -227,7 +235,6 @@
           });
   };
 
-  // کاتێک یاریزان کلیک لە "دەستپێکردن" دەکات ئەمە کار دەکات
   function startGame() {
     document.getElementById("tutorial-section").style.display = "none";
     document.getElementById("game-section").style.display = "block";
